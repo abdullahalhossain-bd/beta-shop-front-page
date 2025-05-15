@@ -1,5 +1,6 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
@@ -10,8 +11,17 @@ import { ChevronRight } from "lucide-react";
 import { theme } from "@/lib/theme";
 
 const Shop = () => {
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const categoryParam = queryParams.get('category');
+  
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(categoryParam);
   const [sortBy, setSortBy] = useState<string>("default");
+
+  // Update selected category when URL parameter changes
+  useEffect(() => {
+    setSelectedCategory(categoryParam);
+  }, [categoryParam]);
 
   // Filter products by category
   const filteredProducts = selectedCategory

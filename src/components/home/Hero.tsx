@@ -43,7 +43,7 @@ const Hero = () => {
               className="text-lg px-8 rounded-full border-white text-white hover:bg-white hover:text-gray-900"
               asChild
             >
-              <Link to="/categories">Explore Categories</Link>
+              <Link to="/shop">Explore Categories</Link>
             </Button>
           </div>
         </div>
