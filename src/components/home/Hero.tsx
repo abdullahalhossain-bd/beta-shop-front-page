@@ -1,6 +1,7 @@
 
 import { Button } from "@/components/ui/button";
 import { theme } from "@/lib/theme";
+import { Link } from "react-router-dom";
 
 const Hero = () => {
   return (
@@ -32,15 +33,17 @@ const Hero = () => {
               size="lg" 
               className="text-lg px-8 rounded-full"
               style={{ backgroundColor: theme.colors.primary }}
+              asChild
             >
-              Shop Now
+              <Link to="/shop">Shop Now</Link>
             </Button>
             <Button 
               size="lg" 
               variant="outline" 
               className="text-lg px-8 rounded-full border-white text-white hover:bg-white hover:text-gray-900"
+              asChild
             >
-              Explore Categories
+              <Link to="/categories">Explore Categories</Link>
             </Button>
           </div>
         </div>

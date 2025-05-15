@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { useStore } from "@/lib/store";
 import { Badge } from "@/components/ui/badge";
 import { theme } from "@/lib/theme";
+import { Link } from "react-router-dom";
 
 const Header = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -34,13 +35,13 @@ const Header = () => {
             </span>
           </div>
           <div className="flex items-center gap-4 text-sm">
-            <a href="#" className="hover:text-[#e0b3ff] transition-colors">
+            <Link to="/account" className="hover:text-[#e0b3ff] transition-colors">
               <User className="inline-block mr-1 h-4 w-4" /> Account
-            </a>
-            <a href="#" className="hover:text-[#e0b3ff] transition-colors">
+            </Link>
+            <Link to="/wishlist" className="hover:text-[#e0b3ff] transition-colors">
               <Heart className="inline-block mr-1 h-4 w-4" /> Wishlist
-            </a>
-            <a href="#" className="hover:text-[#e0b3ff] transition-colors">
+            </Link>
+            <Link to="/track-order" className="hover:text-[#e0b3ff] transition-colors">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="inline-block mr-1">
                 <rect x="1" y="3" width="15" height="13"></rect>
                 <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon>
@@ -48,7 +49,7 @@ const Header = () => {
                 <circle cx="18.5" cy="18.5" r="2.5"></circle>
               </svg>
               Track Order
-            </a>
+            </Link>
           </div>
         </div>
       </div>
@@ -58,10 +59,10 @@ const Header = () => {
         <div className="container mx-auto px-4">
           <div className="flex flex-wrap items-center justify-between gap-4">
             <div className="flex items-center">
-              <a href="/" className="text-2xl font-bold" style={{ color: theme.colors.primary }}>
+              <Link to="/" className="text-2xl font-bold" style={{ color: theme.colors.primary }}>
                 <ShoppingCart className="inline-block mr-2" style={{ color: theme.colors.secondary }} />
                 Betagi E-Shop
-              </a>
+              </Link>
             </div>
 
             <div className="order-3 w-full lg:w-auto lg:order-none lg:flex-1 px-4 max-w-md mx-auto">
@@ -122,28 +123,28 @@ const Header = () => {
         <div className="container mx-auto px-4">
           <ul className={`${mobileMenuOpen ? 'flex' : 'hidden'} lg:flex flex-col lg:flex-row justify-center py-0 lg:py-4 text-gray-800`}>
             <li>
-              <a href="/" className="block py-3 px-4 hover:text-[#6a0dad] font-medium relative after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 hover:after:w-full after:bg-[#6a0dad] after:transition-all">Home</a>
+              <Link to="/" className="block py-3 px-4 hover:text-[#6a0dad] font-medium relative after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 hover:after:w-full after:bg-[#6a0dad] after:transition-all">Home</Link>
             </li>
             <li>
-              <a href="/shop" className="block py-3 px-4 hover:text-[#6a0dad] font-medium relative after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 hover:after:w-full after:bg-[#6a0dad] after:transition-all">Shop</a>
+              <Link to="/shop" className="block py-3 px-4 hover:text-[#6a0dad] font-medium relative after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 hover:after:w-full after:bg-[#6a0dad] after:transition-all">Shop</Link>
             </li>
             <li>
-              <a href="/categories" className="block py-3 px-4 hover:text-[#6a0dad] font-medium relative after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 hover:after:w-full after:bg-[#6a0dad] after:transition-all">Categories</a>
+              <Link to="/categories" className="block py-3 px-4 hover:text-[#6a0dad] font-medium relative after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 hover:after:w-full after:bg-[#6a0dad] after:transition-all">Categories</Link>
             </li>
             <li>
-              <a href="/new-arrivals" className="block py-3 px-4 hover:text-[#6a0dad] font-medium relative after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 hover:after:w-full after:bg-[#6a0dad] after:transition-all">New Arrivals</a>
+              <Link to="/new-arrivals" className="block py-3 px-4 hover:text-[#6a0dad] font-medium relative after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 hover:after:w-full after:bg-[#6a0dad] after:transition-all">New Arrivals</Link>
             </li>
             <li>
-              <a href="/featured" className="block py-3 px-4 hover:text-[#6a0dad] font-medium relative after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 hover:after:w-full after:bg-[#6a0dad] after:transition-all">Featured</a>
+              <Link to="/featured" className="block py-3 px-4 hover:text-[#6a0dad] font-medium relative after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 hover:after:w-full after:bg-[#6a0dad] after:transition-all">Featured</Link>
             </li>
             <li>
-              <a href="/deals" className="block py-3 px-4 text-[#dc3545] hover:text-[#c82333] font-medium relative after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 hover:after:w-full after:bg-[#dc3545] after:transition-all">Deals</a>
+              <Link to="/deals" className="block py-3 px-4 text-[#dc3545] hover:text-[#c82333] font-medium relative after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 hover:after:w-full after:bg-[#dc3545] after:transition-all">Deals</Link>
             </li>
             <li>
-              <a href="/about" className="block py-3 px-4 hover:text-[#6a0dad] font-medium relative after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 hover:after:w-full after:bg-[#6a0dad] after:transition-all">About</a>
+              <Link to="/about" className="block py-3 px-4 hover:text-[#6a0dad] font-medium relative after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 hover:after:w-full after:bg-[#6a0dad] after:transition-all">About</Link>
             </li>
             <li>
-              <a href="/contact" className="block py-3 px-4 hover:text-[#6a0dad] font-medium relative after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 hover:after:w-full after:bg-[#6a0dad] after:transition-all">Contact</a>
+              <Link to="/contact" className="block py-3 px-4 hover:text-[#6a0dad] font-medium relative after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 hover:after:w-full after:bg-[#6a0dad] after:transition-all">Contact</Link>
             </li>
           </ul>
         </div>

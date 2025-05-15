@@ -1,4 +1,5 @@
 
+import { Link } from "react-router-dom";
 import { categories } from "@/lib/data";
 
 const Categories = () => {
@@ -17,7 +18,8 @@ const Categories = () => {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
           {categories.map((category, index) => (
-            <div 
+            <Link
+              to={`/shop?category=${category.id}`}
               key={category.id} 
               className="relative h-80 rounded-xl overflow-hidden group cursor-pointer shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2"
               style={{ animationDelay: `${index * 0.1}s` }}
@@ -39,7 +41,7 @@ const Categories = () => {
                   </span>
                 </div>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </div>
