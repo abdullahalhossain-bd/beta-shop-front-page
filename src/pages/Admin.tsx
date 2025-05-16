@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -37,7 +36,7 @@ const Admin = () => {
     description: "",
     price: 0,
     oldPrice: 0,
-    image: "",
+    image: "https://placehold.co/300x400",
     category: "",
     featured: false,
     new: false,
@@ -82,10 +81,15 @@ const Admin = () => {
 
   const handleEditProduct = (product: Product) => {
     setEditProduct(product);
-    // Fixed: properly handle potentially undefined oldPrice
+    // Fixed: ensure all required properties have default values if they're optional in Product
     setFormData({
       ...product,
-      oldPrice: product.oldPrice || 0 // Provide default value if oldPrice is undefined
+      featured: product.featured || false,
+      new: product.new || false,
+      sale: product.sale || false,
+      rating: product.rating || 0,
+      reviewCount: product.reviewCount || 0,
+      oldPrice: product.oldPrice || 0
     });
     setShowDialog(true);
   };
@@ -414,4 +418,3 @@ const Admin = () => {
 };
 
 export default Admin;
-

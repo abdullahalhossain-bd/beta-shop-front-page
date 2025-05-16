@@ -7,8 +7,8 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { toast } from "sonner";
 
 // Admin credentials - in a real app, these would be stored securely
-const ADMIN_EMAIL = "admin@example.com";
-const ADMIN_PASSWORD = "admin123";
+const ADMIN_EMAIL = "jawadnoor.work@gmail.com";
+const ADMIN_PASSWORD = "tahim 10114";
 
 const AdminLogin = () => {
   const [email, setEmail] = useState("");
@@ -61,7 +61,7 @@ const AdminLogin = () => {
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="admin@example.com"
+                placeholder="jawadnoor.work@gmail.com"
                 required
               />
             </div>
@@ -88,7 +88,7 @@ const AdminLogin = () => {
             
             <div className="text-center text-sm">
               <p className="text-gray-500 mt-4">
-                For demo purposes: Email: admin@example.com, Password: admin123
+                For demo purposes: Email: jawadnoor.work@gmail.com, Password: tahim 10114
               </p>
             </div>
           </form>
