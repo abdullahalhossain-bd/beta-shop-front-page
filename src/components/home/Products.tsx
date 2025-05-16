@@ -1,19 +1,25 @@
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import ProductCard from "./ProductCard";
 import { products } from "@/lib/data";
 import { theme } from "@/lib/theme";
 
 const Products = () => {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const navigate = useNavigate();
 
   const categories = [...new Set(products.map(product => product.category))];
   
   const filteredProducts = selectedCategory 
     ? products.filter(product => product.category === selectedCategory)
     : products;
+
+  // Handle category click to navigate to shop with category filter
+  const handleCategoryClick = (category: string) => {
+    navigate(`/shop?category=${category}`);
+  };
 
   return (
     <section className="py-20 bg-gray-50">
@@ -41,7 +47,7 @@ const Products = () => {
             <Button
               key={category}
               variant={selectedCategory === category ? "default" : "outline"}
-              onClick={() => setSelectedCategory(category)}
+              onClick={() => handleCategoryClick(category)}
               style={selectedCategory === category ? { backgroundColor: theme.colors.primary } : {}}
             >
               {category.charAt(0).toUpperCase() + category.slice(1)}

@@ -6,13 +6,22 @@ import { Input } from "@/components/ui/input";
 import { useStore } from "@/lib/store";
 import { Badge } from "@/components/ui/badge";
 import { theme } from "@/lib/theme";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Header = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { cartOpen, toggleCart, getCartItemCount, getWishlistCount } = useStore();
   const cartCount = getCartItemCount();
   const wishlistCount = getWishlistCount();
+  const [searchQuery, setSearchQuery] = useState("");
+  const navigate = useNavigate();
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      navigate(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
+    }
+  };
 
   return (
     <header className="sticky top-0 z-50 w-full">
@@ -66,20 +75,23 @@ const Header = () => {
             </div>
 
             <div className="order-3 w-full lg:w-auto lg:order-none lg:flex-1 px-4 max-w-md mx-auto">
-              <div className="relative">
+              <form onSubmit={handleSearch} className="relative">
                 <Input
                   type="text"
                   placeholder="Search for products..."
                   className="pl-3 pr-10 py-2 w-full rounded-full border-2 focus-visible:ring-[#6a0dad]"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
                 />
                 <Button
                   size="icon"
+                  type="submit"
                   className="absolute right-1 top-1/2 -translate-y-1/2 rounded-full w-8 h-8"
                   style={{ backgroundColor: theme.colors.secondary }}
                 >
                   <Search className="h-4 w-4" />
                 </Button>
-              </div>
+              </form>
             </div>
 
             <div className="flex items-center gap-6">
