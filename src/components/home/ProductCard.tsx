@@ -1,17 +1,33 @@
 
 import { Heart, ShoppingCart } from "lucide-react";
-import { Product } from "@/lib/store";
-import { useStore } from "@/lib/store";
+import { Product, useStore } from "@/lib/store";
+import { toast } from "sonner";
+import { useState } from "react";
+import { motion } from "framer-motion";
 
 interface ProductCardProps {
   product: Product;
 }
 
 const ProductCard = ({ product }: ProductCardProps) => {
-  const { addToCart, addToWishlist } = useStore();
+  const { addToCart, addToWishlist, wishlist } = useStore();
+  const [isHovering, setIsHovering] = useState(false);
+  
+  // Check if product is in wishlist
+  const isInWishlist = wishlist.some(item => item.id === product.id);
+
+  const handleAddToWishlist = () => {
+    addToWishlist(product);
+  };
 
   return (
-    <div className="product-card group">
+    <motion.div 
+      className="product-card group"
+      whileHover={{ y: -5 }}
+      transition={{ duration: 0.3 }}
+      onMouseEnter={() => setIsHovering(true)}
+      onMouseLeave={() => setIsHovering(false)}
+    >
       <div className="relative h-64 overflow-hidden rounded-t-lg">
         <img
           src={product.image}
@@ -30,22 +46,35 @@ const ProductCard = ({ product }: ProductCardProps) => {
         )}
         
         <div className="absolute top-3 right-3 flex flex-col gap-2 opacity-0 transform translate-x-4 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300">
-          <button 
-            onClick={() => addToWishlist(product)}
-            className="w-9 h-9 bg-white rounded-full flex items-center justify-center shadow-md hover:bg-[#6a0dad] hover:text-white transition-colors"
+          <motion.button 
+            onClick={handleAddToWishlist}
+            className={`w-9 h-9 rounded-full flex items-center justify-center shadow-md transition-colors ${
+              isInWishlist 
+                ? 'bg-[#6a0dad] text-white' 
+                : 'bg-white text-gray-700 hover:bg-[#6a0dad] hover:text-white'
+            }`}
+            whileTap={{ scale: 0.9 }}
+            title={isInWishlist ? "Remove from wishlist" : "Add to wishlist"}
           >
-            <Heart className="h-4 w-4" />
-          </button>
-          <button 
+            <Heart className="h-4 w-4" fill={isInWishlist ? "currentColor" : "none"} />
+          </motion.button>
+          <motion.button 
             onClick={() => addToCart(product)}
             className="w-9 h-9 bg-white rounded-full flex items-center justify-center shadow-md hover:bg-[#6a0dad] hover:text-white transition-colors"
+            whileTap={{ scale: 0.9 }}
+            title="Add to cart"
           >
             <ShoppingCart className="h-4 w-4" />
-          </button>
+          </motion.button>
         </div>
       </div>
       
-      <div className="p-4 bg-white rounded-b-lg">
+      <motion.div 
+        className="p-4 bg-white rounded-b-lg"
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.1 }}
+      >
         <div className="text-xs text-gray-500 uppercase tracking-wider mb-2">{product.category}</div>
         <h3 className="font-medium text-lg mb-2 line-clamp-1">{product.name}</h3>
         
@@ -67,14 +96,28 @@ const ProductCard = ({ product }: ProductCardProps) => {
           </div>
         )}
         
-        <div className="flex items-center">
-          <span className="text-[#040273] text-lg font-bold">${product.price.toFixed(2)}</span>
-          {product.oldPrice && (
-            <span className="text-gray-500 line-through ml-2">${product.oldPrice.toFixed(2)}</span>
+        <div className="flex items-center justify-between">
+          <div>
+            <span className="text-[#040273] text-lg font-bold">${product.price.toFixed(2)}</span>
+            {product.oldPrice && (
+              <span className="text-gray-500 line-through ml-2">${product.oldPrice.toFixed(2)}</span>
+            )}
+          </div>
+          
+          {isHovering && (
+            <motion.button
+              className="sm:hidden inline-flex items-center justify-center p-2 rounded-full bg-[#6a0dad] text-white"
+              onClick={() => addToCart(product)}
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              whileTap={{ scale: 0.9 }}
+            >
+              <ShoppingCart className="h-4 w-4" />
+            </motion.button>
           )}
         </div>
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 };
 

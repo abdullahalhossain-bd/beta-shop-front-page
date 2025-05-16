@@ -95,14 +95,14 @@ const Header = () => {
             </div>
 
             <div className="flex items-center gap-6">
-              <button className="relative">
+              <Link to="/wishlist" className="relative">
                 <Heart className="h-6 w-6 text-gray-700 hover:text-[#6a0dad]" />
                 {wishlistCount > 0 && (
                   <Badge className="absolute -top-2 -right-2 h-5 w-5 flex items-center justify-center p-0 text-xs" style={{ backgroundColor: theme.colors.danger }}>
                     {wishlistCount}
                   </Badge>
                 )}
-              </button>
+              </Link>
 
               <button className="relative" onClick={toggleCart}>
                 <ShoppingCart className="h-6 w-6 text-gray-700 hover:text-[#6a0dad]" />
