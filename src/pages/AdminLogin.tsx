@@ -8,7 +8,11 @@ import { toast } from "sonner";
 
 // Admin credentials - in a real app, these would be stored securely
 const ADMIN_EMAIL = "jawadnoor.work@gmail.com";
-const ADMIN_PASSWORD = "tahim 10114";
+const ADMIN_PASSWORD = "Tahim10114";
+
+// Demo credentials for easy testing
+const DEMO_EMAIL = "admin@example.com";
+const DEMO_PASSWORD = "admin1111";
 
 const AdminLogin = () => {
   const [email, setEmail] = useState("");
@@ -29,7 +33,8 @@ const AdminLogin = () => {
 
     // Check credentials (simple client-side authentication for demo)
     // In a real app, you would use a proper authentication system
-    if (email === ADMIN_EMAIL && password === ADMIN_PASSWORD) {
+    if ((email === ADMIN_EMAIL && password === ADMIN_PASSWORD) || 
+        (email === DEMO_EMAIL && password === DEMO_PASSWORD)) {
       // Set a flag in localStorage to indicate admin is logged in
       localStorage.setItem("isAdminLoggedIn", "true");
       toast.success("Login successful!");
@@ -61,7 +66,7 @@ const AdminLogin = () => {
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="jawadnoor.work@gmail.com"
+                placeholder="Enter your email"
                 required
               />
             </div>
@@ -88,7 +93,7 @@ const AdminLogin = () => {
             
             <div className="text-center text-sm">
               <p className="text-gray-500 mt-4">
-                For demo purposes: Email: jawadnoor.work@gmail.com, Password: tahim 10114
+                Demo login: Email: admin@example.com, Password: admin1111
               </p>
             </div>
           </form>

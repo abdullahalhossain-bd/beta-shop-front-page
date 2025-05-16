@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -9,6 +10,9 @@ import { products } from "@/lib/data";
 import { Product, useStore } from "@/lib/store";
 import { toast } from "sonner";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
+import OrdersTab from "@/components/admin/OrdersTab";
+import CustomersTab from "@/components/admin/CustomersTab";
+import SettingsTab from "@/components/admin/SettingsTab";
 
 const Admin = () => {
   const navigate = useNavigate();
@@ -152,9 +156,9 @@ const Admin = () => {
         <Tabs defaultValue="products">
           <TabsList className="mb-6">
             <TabsTrigger value="products">Products</TabsTrigger>
-            <TabsTrigger value="orders" disabled>Orders</TabsTrigger>
-            <TabsTrigger value="customers" disabled>Customers</TabsTrigger>
-            <TabsTrigger value="settings" disabled>Settings</TabsTrigger>
+            <TabsTrigger value="orders">Orders</TabsTrigger>
+            <TabsTrigger value="customers">Customers</TabsTrigger>
+            <TabsTrigger value="settings">Settings</TabsTrigger>
           </TabsList>
 
           <TabsContent value="products" className="space-y-6">
@@ -232,6 +236,18 @@ const Admin = () => {
                 </table>
               </div>
             </div>
+          </TabsContent>
+          
+          <TabsContent value="orders">
+            <OrdersTab />
+          </TabsContent>
+          
+          <TabsContent value="customers">
+            <CustomersTab />
+          </TabsContent>
+          
+          <TabsContent value="settings">
+            <SettingsTab />
           </TabsContent>
         </Tabs>
       </div>
