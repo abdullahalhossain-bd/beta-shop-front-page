@@ -4,6 +4,7 @@ import { Product, useStore } from "@/lib/store";
 import { toast } from "sonner";
 import { useState } from "react";
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 
 interface ProductCardProps {
   product: Product;
@@ -29,11 +30,13 @@ const ProductCard = ({ product }: ProductCardProps) => {
       onMouseLeave={() => setIsHovering(false)}
     >
       <div className="relative h-64 overflow-hidden rounded-t-lg">
-        <img
-          src={product.image}
-          alt={product.name}
-          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-        />
+        <Link to={`/product/${product.id}`}>
+          <img
+            src={product.image}
+            alt={product.name}
+            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+          />
+        </Link>
         
         {(product.new || product.sale) && (
           <div 
@@ -76,7 +79,11 @@ const ProductCard = ({ product }: ProductCardProps) => {
         transition={{ delay: 0.1 }}
       >
         <div className="text-xs text-gray-500 uppercase tracking-wider mb-2">{product.category}</div>
-        <h3 className="font-medium text-lg mb-2 line-clamp-1">{product.name}</h3>
+        <Link to={`/product/${product.id}`}>
+          <h3 className="font-medium text-lg mb-2 line-clamp-1 hover:text-[#040273] transition-colors">
+            {product.name}
+          </h3>
+        </Link>
         
         {product.rating && (
           <div className="flex items-center mb-3">
