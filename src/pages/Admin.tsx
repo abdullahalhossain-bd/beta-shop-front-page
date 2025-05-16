@@ -17,7 +17,21 @@ const Admin = () => {
   const [allProducts, setAllProducts] = useState<Product[]>(products);
   const [showDialog, setShowDialog] = useState(false);
   const [editProduct, setEditProduct] = useState<Product | null>(null);
-  const [formData, setFormData] = useState({
+  // Updated formData state type definition to match Product interface with optional oldPrice
+  const [formData, setFormData] = useState<{
+    id: string;
+    name: string;
+    description: string;
+    price: number;
+    oldPrice?: number;
+    image: string;
+    category: string;
+    featured: boolean;
+    new: boolean;
+    sale: boolean;
+    rating: number;
+    reviewCount: number;
+  }>({
     id: "",
     name: "",
     description: "",
@@ -68,7 +82,11 @@ const Admin = () => {
 
   const handleEditProduct = (product: Product) => {
     setEditProduct(product);
-    setFormData(product);
+    // Fixed: properly handle potentially undefined oldPrice
+    setFormData({
+      ...product,
+      oldPrice: product.oldPrice || 0 // Provide default value if oldPrice is undefined
+    });
     setShowDialog(true);
   };
 
@@ -396,3 +414,4 @@ const Admin = () => {
 };
 
 export default Admin;
+
