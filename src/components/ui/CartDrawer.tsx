@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { ShoppingCart, Plus, Minus, Trash, X } from "lucide-react";
 import { useStore } from "@/lib/store";
 import { theme } from "@/lib/theme";
+import { useNavigate } from "react-router-dom";
 
 const CartDrawer = () => {
   const { 
@@ -15,8 +16,14 @@ const CartDrawer = () => {
     clearCart,
     getCartTotal
   } = useStore();
+  const navigate = useNavigate();
 
   const total = getCartTotal();
+
+  const handleCheckout = () => {
+    toggleCart();
+    navigate("/checkout");
+  };
 
   return (
     <Sheet open={cartOpen} onOpenChange={toggleCart}>
@@ -121,6 +128,7 @@ const CartDrawer = () => {
                 <Button 
                   className="w-full"
                   style={{ backgroundColor: theme.colors.primary }}
+                  onClick={handleCheckout}
                 >
                   Checkout
                 </Button>

@@ -13,6 +13,10 @@ import ProductDetail from "./pages/ProductDetail";
 import Admin from "./pages/Admin";
 import AdminLogin from "./pages/AdminLogin";
 import UserProfile from "./pages/UserProfile";
+import TrackOrder from "./pages/TrackOrder";
+import ProductReview from "./pages/ProductReview";
+import Checkout from "./pages/Checkout";
+import OrderConfirmation from "./pages/OrderConfirmation";
 
 const queryClient = new QueryClient();
 
@@ -31,6 +35,10 @@ const App = () => (
           <Route path="/admin" element={<Admin />} />
           <Route path="/admin-login" element={<AdminLogin />} />
           <Route path="/profile" element={<UserProfile />} />
+          <Route path="/track-order" element={<TrackOrder />} />
+          <Route path="/review/:orderId" element={<ProductReview />} />
+          <Route path="/checkout" element={<Checkout />} />
+          <Route path="/order-confirmation" element={<OrderConfirmation />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

@@ -53,6 +53,15 @@ const ProductDetail = () => {
     }
   };
 
+  const handleBuyNow = () => {
+    if (product) {
+      // Add to cart first
+      handleAddToCart();
+      // Navigate to checkout
+      navigate('/checkout');
+    }
+  };
+
   const handleAddToWishlist = () => {
     if (product) {
       addToWishlist(product);
@@ -203,10 +212,18 @@ const ProductDetail = () => {
             <div className="flex flex-wrap gap-3">
               <Button 
                 onClick={handleAddToCart}
-                className="bg-[#040273] hover:bg-[#040273]/90 flex items-center gap-2 px-8"
+                className="bg-[#040273] hover:bg-[#040273]/90 flex items-center gap-2"
               >
                 <ShoppingCart size={18} />
                 Add to Cart
+              </Button>
+              
+              <Button
+                onClick={handleBuyNow}
+                style={{ backgroundColor: theme.colors.secondary }}
+                className="flex items-center gap-2"
+              >
+                Buy Now
               </Button>
               
               <Button
