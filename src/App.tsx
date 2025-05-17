@@ -12,6 +12,7 @@ import Wishlist from "./pages/Wishlist";
 import ProductDetail from "./pages/ProductDetail";
 import Admin from "./pages/Admin";
 import AdminLogin from "./pages/AdminLogin";
+import UserProfile from "./pages/UserProfile";
 
 const queryClient = new QueryClient();
 
@@ -29,6 +30,7 @@ const App = () => (
           <Route path="/product/:productId" element={<ProductDetail />} />
           <Route path="/admin" element={<Admin />} />
           <Route path="/admin-login" element={<AdminLogin />} />
+          <Route path="/profile" element={<UserProfile />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

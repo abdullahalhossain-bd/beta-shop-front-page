@@ -44,7 +44,7 @@ const Header = () => {
             </span>
           </div>
           <div className="flex items-center gap-4 text-sm">
-            <Link to="/account" className="hover:text-[#e0b3ff] transition-colors">
+            <Link to="/profile" className="hover:text-[#e0b3ff] transition-colors">
               <User className="inline-block mr-1 h-4 w-4" /> Account
             </Link>
             <Link to="/wishlist" className="hover:text-[#e0b3ff] transition-colors">
@@ -113,9 +113,9 @@ const Header = () => {
                 )}
               </button>
 
-              <button>
+              <Link to="/profile">
                 <User className="h-6 w-6 text-gray-700 hover:text-[#6a0dad]" />
-              </button>
+              </Link>
 
               <Button 
                 variant="ghost" 
