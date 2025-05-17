@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { products } from "@/lib/data";
@@ -8,6 +7,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Heart, ShoppingCart, ArrowLeft, Check, Star } from "lucide-react";
 import { motion } from "framer-motion";
 import { toast } from "sonner";
+import { theme } from "@/lib/theme";
 
 const ProductDetail = () => {
   const { productId } = useParams();
