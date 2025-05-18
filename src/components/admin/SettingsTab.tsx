@@ -1,596 +1,357 @@
-
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Switch } from "@/components/ui/switch";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toast } from "sonner";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { Truck, MapPin } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { products } from "@/lib/data";
 import { Product } from "@/lib/store";
 
+interface FeaturedProduct extends Product {}
+
 const SettingsTab = () => {
-  // Store settings
-  const [storeSettings, setStoreSettings] = useState({
-    storeName: "Fashion Store",
-    storeEmail: "contact@fashionstore.com",
-    storePhone: "+1 (555) 123-4567",
-    storeAddress: "123 Fashion Street, Style City, SC 12345",
-    currencySymbol: "$",
-    logo: "https://placehold.co/200x60",
+  // Existing settings state
+  const [storeInfo, setStoreInfo] = useState({
+    storeName: "Betagi E-Shop",
+    storeEmail: "contact@betagi-eshop.com",
+    storePhone: "+1 (234) 567-890",
+    storeAddress: "123 E-Commerce St, Shopping City, 10001",
+    storeDescription: "Your one-stop shop for quality products at affordable prices.",
   });
-
-  // Email settings
-  const [emailSettings, setEmailSettings] = useState({
-    enableOrderConfirmation: true,
-    enableShippingNotifications: true,
-    enableAbandonedCart: false,
-    enableNewProductNotifications: true,
-    adminEmailCopy: true,
-  });
-
-  // Tax and shipping settings
-  const [taxSettings, setTaxSettings] = useState({
-    enableTax: true,
-    taxRate: 7.5,
-    enableFreeShipping: true,
-    freeShippingThreshold: 100,
-    defaultShippingRate: 9.99,
-  });
-
-  // Featured products management
-  const [allProducts, setAllProducts] = useState<Product[]>(products);
   
-  // Delivery settings
   const [deliverySettings, setDeliverySettings] = useState({
-    standardDeliveryCharge: 5.99,
-    expressDeliveryCharge: 12.99,
-    internationalDeliveryCharge: 24.99,
+    deliveryCharge: 5,
+    freeDeliveryThreshold: 50,
+    deliveryLocations: "New York, Los Angeles, Chicago, Houston, Miami"
   });
-  
-  // Delivery locations
-  const [deliveryLocations, setDeliveryLocations] = useState([
-    { id: '1', name: 'New York', isActive: true },
-    { id: '2', name: 'Los Angeles', isActive: true },
-    { id: '3', name: 'Chicago', isActive: true },
-    { id: '4', name: 'Houston', isActive: true },
-    { id: '5', name: 'Phoenix', isActive: false },
-  ]);
-  
-  // New location input
-  const [newLocation, setNewLocation] = useState('');
 
-  const handleStoreSettingsChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setStoreSettings(prev => ({ ...prev, [name]: value }));
-  };
+  // Featured products state
+  const [availableProducts, setAvailableProducts] = useState<Product[]>([]);
+  const [featuredProducts, setFeaturedProducts] = useState<FeaturedProduct[]>([]);
+  const [searchTerm, setSearchTerm] = useState("");
 
-  const handleTaxSettingsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setTaxSettings(prev => ({ ...prev, [name]: name === "taxRate" || name === "freeShippingThreshold" || name === "defaultShippingRate" ? parseFloat(value) : value }));
-  };
-  
-  const handleDeliverySettingsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setDeliverySettings(prev => ({ ...prev, [name]: parseFloat(value) }));
-  };
-
-  const handleToggle = (setting: string, section: "email" | "tax") => {
-    if (section === "email") {
-      setEmailSettings(prev => ({ ...prev, [setting]: !prev[setting as keyof typeof prev] }));
-    } else {
-      setTaxSettings(prev => ({ ...prev, [setting]: !prev[setting as keyof typeof prev] }));
-    }
-  };
-  
-  const toggleProductFeatured = (productId: string) => {
-    setAllProducts(prev => 
-      prev.map(product => 
-        product.id === productId 
-          ? { ...product, featured: !product.featured } 
-          : product
-      )
-    );
-    toast.success("Product featured status updated");
-  };
-  
-  const toggleLocationActive = (locationId: string) => {
-    setDeliveryLocations(prev => 
-      prev.map(location => 
-        location.id === locationId 
-          ? { ...location, isActive: !location.isActive } 
-          : location
-      )
-    );
-    toast.success("Delivery location status updated");
-  };
-  
-  const addDeliveryLocation = () => {
-    if (newLocation.trim() === '') {
-      toast.error("Location name cannot be empty");
-      return;
+  useEffect(() => {
+    // Initial setup - load all products
+    setAvailableProducts(products);
+    
+    // Load featured products from localStorage if available
+    const storedFeaturedProducts = localStorage.getItem("featuredProducts");
+    if (storedFeaturedProducts) {
+      setFeaturedProducts(JSON.parse(storedFeaturedProducts));
     }
     
-    setDeliveryLocations(prev => [
-      ...prev, 
-      { 
-        id: `location-${Date.now()}`, 
-        name: newLocation.trim(), 
-        isActive: true 
-      }
-    ]);
-    setNewLocation('');
-    toast.success("Delivery location added successfully");
-  };
-  
-  const removeDeliveryLocation = (locationId: string) => {
-    setDeliveryLocations(prev => prev.filter(location => location.id !== locationId));
-    toast.success("Delivery location removed");
+    // Load delivery settings from localStorage if available
+    const storedDeliverySettings = localStorage.getItem("deliverySettings");
+    if (storedDeliverySettings) {
+      setDeliverySettings(JSON.parse(storedDeliverySettings));
+    }
+    
+    // Load store info from localStorage if available
+    const storedStoreInfo = localStorage.getItem("storeInfo");
+    if (storedStoreInfo) {
+      setStoreInfo(JSON.parse(storedStoreInfo));
+    }
+  }, []);
+
+  const handleAddToFeatured = (product: Product) => {
+    if (!featuredProducts.some(p => p.id === product.id)) {
+      const newFeaturedProducts = [...featuredProducts, product];
+      setFeaturedProducts(newFeaturedProducts);
+      localStorage.setItem("featuredProducts", JSON.stringify(newFeaturedProducts));
+      toast.success(`${product.name} added to featured products`);
+    } else {
+      toast.info(`${product.name} is already in featured products`);
+    }
   };
 
-  const handleSaveSettings = (section: string) => {
-    toast.success(`${section} settings saved successfully`);
+  const handleRemoveFromFeatured = (productId: string) => {
+    const updatedFeatured = featuredProducts.filter(p => p.id !== productId);
+    setFeaturedProducts(updatedFeatured);
+    localStorage.setItem("featuredProducts", JSON.stringify(updatedFeatured));
+    toast.info("Product removed from featured products");
+  };
+
+  const filteredProducts = availableProducts.filter(product => 
+    product.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
+    product.category.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const handleSaveStoreInfo = () => {
+    localStorage.setItem("storeInfo", JSON.stringify(storeInfo));
+    toast.success("Store information saved successfully");
+  };
+
+  const handleSaveDeliverySettings = () => {
+    localStorage.setItem("deliverySettings", JSON.stringify(deliverySettings));
+    toast.success("Delivery settings saved successfully");
+  };
+  
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, stateSetter: Function, stateObject: any) => {
+    const { name, value } = e.target;
+    stateSetter({
+      ...stateObject,
+      [name]: value
+    });
+  };
+
+  const handleNumberInputChange = (e: React.ChangeEvent<HTMLInputElement>, stateSetter: Function, stateObject: any) => {
+    const { name, value } = e.target;
+    stateSetter({
+      ...stateObject,
+      [name]: parseFloat(value) || 0
+    });
   };
 
   return (
     <div className="space-y-8">
-      <h2 className="text-xl font-semibold">Store Settings</h2>
-
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-lg">General Information</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <label htmlFor="storeName" className="text-sm font-medium">
-                Store Name
-              </label>
-              <Input
-                id="storeName"
-                name="storeName"
-                value={storeSettings.storeName}
-                onChange={handleStoreSettingsChange}
-              />
-            </div>
-            <div className="space-y-2">
-              <label htmlFor="storeEmail" className="text-sm font-medium">
-                Store Email
-              </label>
-              <Input
-                id="storeEmail"
-                name="storeEmail"
-                type="email"
-                value={storeSettings.storeEmail}
-                onChange={handleStoreSettingsChange}
-              />
-            </div>
-            <div className="space-y-2">
-              <label htmlFor="storePhone" className="text-sm font-medium">
-                Store Phone
-              </label>
-              <Input
-                id="storePhone"
-                name="storePhone"
-                value={storeSettings.storePhone}
-                onChange={handleStoreSettingsChange}
-              />
-            </div>
-            <div className="space-y-2">
-              <label htmlFor="currencySymbol" className="text-sm font-medium">
-                Currency Symbol
-              </label>
-              <Input
-                id="currencySymbol"
-                name="currencySymbol"
-                value={storeSettings.currencySymbol}
-                onChange={handleStoreSettingsChange}
-              />
-            </div>
-            <div className="space-y-2 md:col-span-2">
-              <label htmlFor="storeAddress" className="text-sm font-medium">
-                Store Address
-              </label>
-              <Textarea
-                id="storeAddress"
-                name="storeAddress"
-                value={storeSettings.storeAddress}
-                onChange={handleStoreSettingsChange}
-                rows={2}
-              />
-            </div>
-            <div className="space-y-2 md:col-span-2">
-              <label htmlFor="logo" className="text-sm font-medium">
-                Logo URL
-              </label>
-              <Input
-                id="logo"
-                name="logo"
-                value={storeSettings.logo}
-                onChange={handleStoreSettingsChange}
-              />
-              <div className="mt-2">
-                <p className="text-sm text-gray-500 mb-2">Current logo:</p>
-                <img 
-                  src={storeSettings.logo} 
-                  alt="Store logo" 
-                  className="h-12 object-contain border rounded p-1" 
-                />
-              </div>
-            </div>
-          </div>
-          <div className="pt-2">
-            <Button 
-              onClick={() => handleSaveSettings("General")}
-              className="bg-[#040273]"
-            >
-              Save General Settings
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
-
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-lg">Featured Products</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="rounded-md border">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Image</TableHead>
-                  <TableHead>Name</TableHead>
-                  <TableHead>Price</TableHead>
-                  <TableHead>Featured</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {allProducts.map((product) => (
-                  <TableRow key={product.id}>
-                    <TableCell>
-                      <img
-                        src={product.image}
-                        alt={product.name}
-                        className="h-10 w-10 rounded-md object-cover"
-                      />
-                    </TableCell>
-                    <TableCell className="font-medium">{product.name}</TableCell>
-                    <TableCell>${product.price.toFixed(2)}</TableCell>
-                    <TableCell>
-                      <Switch
-                        checked={product.featured || false}
-                        onCheckedChange={() => toggleProductFeatured(product.id)}
-                      />
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </div>
-          <div className="pt-2">
-            <Button 
-              onClick={() => handleSaveSettings("Featured Products")}
-              className="bg-[#040273]"
-            >
-              Save Featured Products
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
+      <div className="flex justify-between items-center">
+        <h2 className="text-xl font-semibold">Settings</h2>
+      </div>
       
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Truck size={18} />
-            Delivery Charges
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="space-y-2">
-              <label htmlFor="standardDeliveryCharge" className="text-sm font-medium">
-                Standard Delivery Charge ({storeSettings.currencySymbol})
-              </label>
-              <Input
-                id="standardDeliveryCharge"
-                name="standardDeliveryCharge"
-                type="number"
-                step="0.01"
-                value={deliverySettings.standardDeliveryCharge}
-                onChange={handleDeliverySettingsChange}
-              />
-            </div>
-            <div className="space-y-2">
-              <label htmlFor="expressDeliveryCharge" className="text-sm font-medium">
-                Express Delivery Charge ({storeSettings.currencySymbol})
-              </label>
-              <Input
-                id="expressDeliveryCharge"
-                name="expressDeliveryCharge"
-                type="number"
-                step="0.01"
-                value={deliverySettings.expressDeliveryCharge}
-                onChange={handleDeliverySettingsChange}
-              />
-            </div>
-            <div className="space-y-2">
-              <label htmlFor="internationalDeliveryCharge" className="text-sm font-medium">
-                International Delivery Charge ({storeSettings.currencySymbol})
-              </label>
-              <Input
-                id="internationalDeliveryCharge"
-                name="internationalDeliveryCharge"
-                type="number"
-                step="0.01"
-                value={deliverySettings.internationalDeliveryCharge}
-                onChange={handleDeliverySettingsChange}
-              />
-            </div>
-          </div>
-          <div className="pt-2">
-            <Button 
-              onClick={() => handleSaveSettings("Delivery Charges")}
-              className="bg-[#040273]"
-            >
-              Save Delivery Charges
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
-      
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <MapPin size={18} />
-            Delivery Locations
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="flex items-end gap-2">
-            <div className="flex-1">
-              <label htmlFor="newLocation" className="text-sm font-medium block mb-2">
-                Add New Location
-              </label>
-              <Input
-                id="newLocation"
-                value={newLocation}
-                onChange={(e) => setNewLocation(e.target.value)}
-                placeholder="Enter city or region name"
-              />
-            </div>
-            <Button 
-              onClick={addDeliveryLocation}
-              className="bg-[#040273]"
-            >
-              Add Location
-            </Button>
-          </div>
-          
-          <div className="rounded-md border mt-4">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Location Name</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Actions</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {deliveryLocations.map((location) => (
-                  <TableRow key={location.id}>
-                    <TableCell className="font-medium">{location.name}</TableCell>
-                    <TableCell>
-                      <Switch
-                        checked={location.isActive}
-                        onCheckedChange={() => toggleLocationActive(location.id)}
-                      />
-                    </TableCell>
-                    <TableCell>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        className="text-red-500 hover:text-red-700"
-                        onClick={() => removeDeliveryLocation(location.id)}
-                      >
-                        Remove
-                      </Button>
-                    </TableCell>
-                  </TableRow>
-                ))}
-                {deliveryLocations.length === 0 && (
-                  <TableRow>
-                    <TableCell colSpan={3} className="text-center py-4 text-gray-500">
-                      No delivery locations added yet
-                    </TableCell>
-                  </TableRow>
-                )}
-              </TableBody>
-            </Table>
-          </div>
-          
-          <div className="pt-2">
-            <Button 
-              onClick={() => handleSaveSettings("Delivery Locations")}
-              className="bg-[#040273]"
-            >
-              Save Delivery Locations
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
-
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-lg">Email Notifications</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="space-y-4">
-            <div className="flex items-center justify-between">
+      <Tabs defaultValue="storeInfo">
+        <TabsList>
+          <TabsTrigger value="storeInfo">Store Information</TabsTrigger>
+          <TabsTrigger value="featuredProducts">Featured Products</TabsTrigger>
+          <TabsTrigger value="deliverySettings">Delivery Settings</TabsTrigger>
+        </TabsList>
+        
+        {/* Store Information Tab */}
+        <TabsContent value="storeInfo">
+          <Card>
+            <CardHeader>
+              <CardTitle>Store Information</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
               <div>
-                <p className="font-medium">Order Confirmation</p>
-                <p className="text-sm text-gray-500">Send emails when orders are placed</p>
-              </div>
-              <Switch 
-                checked={emailSettings.enableOrderConfirmation}
-                onCheckedChange={() => handleToggle('enableOrderConfirmation', 'email')}
-              />
-            </div>
-            <Separator />
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="font-medium">Shipping Notifications</p>
-                <p className="text-sm text-gray-500">Send emails when orders are shipped</p>
-              </div>
-              <Switch 
-                checked={emailSettings.enableShippingNotifications}
-                onCheckedChange={() => handleToggle('enableShippingNotifications', 'email')}
-              />
-            </div>
-            <Separator />
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="font-medium">Abandoned Cart Reminders</p>
-                <p className="text-sm text-gray-500">Send reminder emails for abandoned carts</p>
-              </div>
-              <Switch 
-                checked={emailSettings.enableAbandonedCart}
-                onCheckedChange={() => handleToggle('enableAbandonedCart', 'email')}
-              />
-            </div>
-            <Separator />
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="font-medium">New Product Notifications</p>
-                <p className="text-sm text-gray-500">Send emails when new products are added</p>
-              </div>
-              <Switch 
-                checked={emailSettings.enableNewProductNotifications}
-                onCheckedChange={() => handleToggle('enableNewProductNotifications', 'email')}
-              />
-            </div>
-            <Separator />
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="font-medium">Admin Email Copy</p>
-                <p className="text-sm text-gray-500">Send a copy of customer emails to admin</p>
-              </div>
-              <Switch 
-                checked={emailSettings.adminEmailCopy}
-                onCheckedChange={() => handleToggle('adminEmailCopy', 'email')}
-              />
-            </div>
-          </div>
-          <div className="pt-2">
-            <Button 
-              onClick={() => handleSaveSettings("Email")}
-              className="bg-[#040273]"
-            >
-              Save Email Settings
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
-
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-lg">Tax & Shipping</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="font-medium">Enable Tax</p>
-                  <p className="text-sm text-gray-500">Apply tax to orders</p>
-                </div>
-                <Switch 
-                  checked={taxSettings.enableTax}
-                  onCheckedChange={() => handleToggle('enableTax', 'tax')}
+                <label htmlFor="storeName" className="block text-sm font-medium mb-1">Store Name</label>
+                <Input 
+                  id="storeName" 
+                  name="storeName" 
+                  value={storeInfo.storeName} 
+                  onChange={(e) => handleInputChange(e, setStoreInfo, storeInfo)}
                 />
               </div>
               
-              {taxSettings.enableTax && (
-                <div className="space-y-2">
-                  <label htmlFor="taxRate" className="text-sm font-medium">
-                    Tax Rate (%)
-                  </label>
-                  <Input
-                    id="taxRate"
-                    name="taxRate"
-                    type="number"
-                    step="0.01"
-                    value={taxSettings.taxRate}
-                    onChange={handleTaxSettingsChange}
-                  />
+              <div>
+                <label htmlFor="storeEmail" className="block text-sm font-medium mb-1">Email Address</label>
+                <Input 
+                  id="storeEmail" 
+                  name="storeEmail" 
+                  type="email" 
+                  value={storeInfo.storeEmail}
+                  onChange={(e) => handleInputChange(e, setStoreInfo, storeInfo)}
+                />
+              </div>
+              
+              <div>
+                <label htmlFor="storePhone" className="block text-sm font-medium mb-1">Phone Number</label>
+                <Input 
+                  id="storePhone" 
+                  name="storePhone" 
+                  value={storeInfo.storePhone}
+                  onChange={(e) => handleInputChange(e, setStoreInfo, storeInfo)}
+                />
+              </div>
+              
+              <div>
+                <label htmlFor="storeAddress" className="block text-sm font-medium mb-1">Address</label>
+                <Input 
+                  id="storeAddress" 
+                  name="storeAddress" 
+                  value={storeInfo.storeAddress}
+                  onChange={(e) => handleInputChange(e, setStoreInfo, storeInfo)}
+                />
+              </div>
+              
+              <div>
+                <label htmlFor="storeDescription" className="block text-sm font-medium mb-1">Store Description</label>
+                <Textarea 
+                  id="storeDescription" 
+                  name="storeDescription" 
+                  rows={4}
+                  value={storeInfo.storeDescription}
+                  onChange={(e) => handleInputChange(e, setStoreInfo, storeInfo)}
+                />
+              </div>
+            </CardContent>
+            <CardFooter>
+              <Button className="bg-[#040273]" onClick={handleSaveStoreInfo}>
+                Save Information
+              </Button>
+            </CardFooter>
+          </Card>
+        </TabsContent>
+        
+        {/* Featured Products Tab */}
+        <TabsContent value="featuredProducts">
+          <Card className="mb-6">
+            <CardHeader>
+              <CardTitle>Currently Featured Products</CardTitle>
+            </CardHeader>
+            <CardContent>
+              {featuredProducts.length === 0 ? (
+                <p className="text-gray-500">No featured products selected yet.</p>
+              ) : (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {featuredProducts.map((product) => (
+                    <div key={product.id} className="border rounded-lg overflow-hidden flex flex-col">
+                      <div className="h-36 overflow-hidden">
+                        <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
+                      </div>
+                      <div className="p-3 flex flex-col flex-grow">
+                        <h4 className="font-medium">{product.name}</h4>
+                        <p className="text-sm text-gray-500 mb-2">{product.category}</p>
+                        <p className="font-semibold">${product.price.toFixed(2)}</p>
+                        <div className="mt-auto pt-2">
+                          <Button 
+                            variant="outline" 
+                            className="w-full text-red-500 hover:text-red-700 hover:border-red-200"
+                            onClick={() => handleRemoveFromFeatured(product.id)}
+                          >
+                            Remove
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
                 </div>
               )}
-            </div>
-
-            <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="font-medium">Enable Free Shipping</p>
-                  <p className="text-sm text-gray-500">Offer free shipping above a threshold</p>
-                </div>
-                <Switch 
-                  checked={taxSettings.enableFreeShipping}
-                  onCheckedChange={() => handleToggle('enableFreeShipping', 'tax')}
+            </CardContent>
+          </Card>
+          
+          <Card>
+            <CardHeader>
+              <CardTitle>Add Featured Products</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div>
+                <Input 
+                  placeholder="Search products by name or category..." 
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
                 />
               </div>
               
-              {taxSettings.enableFreeShipping && (
-                <div className="space-y-2">
-                  <label htmlFor="freeShippingThreshold" className="text-sm font-medium">
-                    Free Shipping Threshold ({storeSettings.currencySymbol})
-                  </label>
-                  <Input
-                    id="freeShippingThreshold"
-                    name="freeShippingThreshold"
-                    type="number"
-                    step="0.01"
-                    value={taxSettings.freeShippingThreshold}
-                    onChange={handleTaxSettingsChange}
-                  />
+              <div className="border rounded-lg overflow-hidden">
+                <div className="max-h-96 overflow-y-auto">
+                  <table className="w-full text-left">
+                    <thead className="bg-gray-50">
+                      <tr className="border-b">
+                        <th className="p-3">Image</th>
+                        <th className="p-3">Name</th>
+                        <th className="p-3">Category</th>
+                        <th className="p-3">Price</th>
+                        <th className="p-3">Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {filteredProducts.length === 0 ? (
+                        <tr>
+                          <td colSpan={5} className="p-3 text-center text-gray-500">
+                            No products found matching your search.
+                          </td>
+                        </tr>
+                      ) : (
+                        filteredProducts.map((product) => (
+                          <tr key={product.id} className="border-b">
+                            <td className="p-3">
+                              <img 
+                                src={product.image} 
+                                alt={product.name} 
+                                className="w-10 h-10 object-cover rounded" 
+                              />
+                            </td>
+                            <td className="p-3 font-medium">{product.name}</td>
+                            <td className="p-3 text-gray-500">{product.category}</td>
+                            <td className="p-3">${product.price.toFixed(2)}</td>
+                            <td className="p-3">
+                              <Button 
+                                variant="outline" 
+                                size="sm"
+                                disabled={featuredProducts.some(p => p.id === product.id)}
+                                onClick={() => handleAddToFeatured(product)}
+                                className="text-[#040273] border-[#040273] hover:bg-[#040273] hover:text-white"
+                              >
+                                {featuredProducts.some(p => p.id === product.id) ? 'Added' : 'Add to Featured'}
+                              </Button>
+                            </td>
+                          </tr>
+                        ))
+                      )}
+                    </tbody>
+                  </table>
                 </div>
-              )}
-              
-              <div className="space-y-2">
-                <label htmlFor="defaultShippingRate" className="text-sm font-medium">
-                  Default Shipping Rate ({storeSettings.currencySymbol})
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+        
+        {/* Delivery Settings Tab */}
+        <TabsContent value="deliverySettings">
+          <Card>
+            <CardHeader>
+              <CardTitle>Delivery Configuration</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div>
+                <label htmlFor="deliveryCharge" className="block text-sm font-medium mb-1">
+                  Standard Delivery Charge ($)
                 </label>
                 <Input
-                  id="defaultShippingRate"
-                  name="defaultShippingRate"
+                  id="deliveryCharge"
+                  name="deliveryCharge"
                   type="number"
+                  min="0"
                   step="0.01"
-                  value={taxSettings.defaultShippingRate}
-                  onChange={handleTaxSettingsChange}
+                  value={deliverySettings.deliveryCharge}
+                  onChange={(e) => handleNumberInputChange(e, setDeliverySettings, deliverySettings)}
                 />
               </div>
-            </div>
-          </div>
-          
-          <div className="pt-2">
-            <Button 
-              onClick={() => handleSaveSettings("Tax & Shipping")}
-              className="bg-[#040273]"
-            >
-              Save Tax & Shipping Settings
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
+              
+              <div>
+                <label htmlFor="freeDeliveryThreshold" className="block text-sm font-medium mb-1">
+                  Free Delivery Threshold ($)
+                </label>
+                <Input
+                  id="freeDeliveryThreshold"
+                  name="freeDeliveryThreshold"
+                  type="number"
+                  min="0"
+                  step="0.01"
+                  value={deliverySettings.freeDeliveryThreshold}
+                  onChange={(e) => handleNumberInputChange(e, setDeliverySettings, deliverySettings)}
+                />
+                <p className="text-xs text-gray-500 mt-1">
+                  Orders above this amount qualify for free delivery.
+                </p>
+              </div>
+              
+              <div>
+                <label htmlFor="deliveryLocations" className="block text-sm font-medium mb-1">
+                  Delivery Locations
+                </label>
+                <Textarea
+                  id="deliveryLocations"
+                  name="deliveryLocations"
+                  rows={4}
+                  placeholder="Enter delivery locations (separate by commas)"
+                  value={deliverySettings.deliveryLocations}
+                  onChange={(e) => handleInputChange(e, setDeliverySettings, deliverySettings)}
+                />
+                <p className="text-xs text-gray-500 mt-1">
+                  Enter city names separated by commas where delivery service is available.
+                </p>
+              </div>
+            </CardContent>
+            <CardFooter>
+              <Button className="bg-[#040273]" onClick={handleSaveDeliverySettings}>
+                Save Delivery Settings
+              </Button>
+            </CardFooter>
+          </Card>
+        </TabsContent>
+      </Tabs>
     </div>
   );
 };

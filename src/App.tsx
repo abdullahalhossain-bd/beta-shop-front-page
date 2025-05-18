@@ -17,6 +17,7 @@ import TrackOrder from "./pages/TrackOrder";
 import ProductReview from "./pages/ProductReview";
 import Checkout from "./pages/Checkout";
 import OrderConfirmation from "./pages/OrderConfirmation";
+import FeaturedProducts from "./pages/FeaturedProducts";
 
 const queryClient = new QueryClient();
 
@@ -39,6 +40,7 @@ const App = () => (
           <Route path="/review/:orderId" element={<ProductReview />} />
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/order-confirmation" element={<OrderConfirmation />} />
+          <Route path="/featured-products" element={<FeaturedProducts />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

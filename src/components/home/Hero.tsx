@@ -2,6 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { theme } from "@/lib/theme";
 import { Link } from "react-router-dom";
+import { Mail, Phone } from "lucide-react";
 
 const Hero = () => {
   return (
@@ -35,7 +36,7 @@ const Hero = () => {
               style={{ backgroundColor: theme.colors.primary }}
               asChild
             >
-              <Link to="/shop">Shop Now</Link>
+              <Link to="/featured-products">Explore Now</Link>
             </Button>
             <Button 
               size="lg" 
@@ -43,8 +44,26 @@ const Hero = () => {
               className="text-lg px-8 rounded-full border-white text-white hover:bg-white hover:text-gray-900"
               asChild
             >
-              <Link to="/shop">Explore Categories</Link>
+              <Link to="/shop">Browse Shop</Link>
             </Button>
+          </div>
+          
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-6 mt-8 animate-fade-in"
+               style={{ animationDuration: "1s", animationDelay: "0.9s" }}>
+            <a 
+              href="tel:+1234567890" 
+              className="flex items-center gap-2 text-white hover:text-gray-200 transition-colors"
+            >
+              <Phone className="h-5 w-5" />
+              <span>+1 (234) 567-890</span>
+            </a>
+            <a 
+              href="mailto:contact@betagi-eshop.com" 
+              className="flex items-center gap-2 text-white hover:text-gray-200 transition-colors"
+            >
+              <Mail className="h-5 w-5" />
+              <span>contact@betagi-eshop.com</span>
+            </a>
           </div>
         </div>
       </div>
