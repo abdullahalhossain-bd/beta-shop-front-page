@@ -7,6 +7,7 @@ import Features from "@/components/home/Features";
 import Team from "@/components/home/Team";
 import Newsletter from "@/components/home/Newsletter";
 import CartDrawer from "@/components/ui/CartDrawer";
+import { Link } from "react-router-dom";
 
 const Index = () => {
   return (
@@ -14,6 +15,16 @@ const Index = () => {
       <Header />
       <main className="flex-grow">
         <Hero />
+        <div className="container mx-auto px-4 py-4">
+          <div className="flex justify-center">
+            <Link 
+              to="/faqs" 
+              className="inline-flex items-center px-4 py-2 bg-gray-100 hover:bg-gray-200 transition-colors rounded-lg text-gray-800"
+            >
+              Frequently Asked Questions
+            </Link>
+          </div>
+        </div>
         <Categories />
         <Features />
         <Team />
