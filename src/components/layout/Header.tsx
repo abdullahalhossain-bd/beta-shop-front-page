@@ -1,12 +1,20 @@
+
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { ShoppingCart } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { useStore } from "@/lib/store";
-import { Cart } from "@/types";
 import { useEffect } from "react";
 import { toast } from "sonner";
+
+// Define Cart type inline since @/types is missing
+interface Cart {
+  id: string;
+  name: string;
+  quantity: number;
+  price: number;
+}
 
 export const navigationItems = [
   { name: "Home", href: "/" },
