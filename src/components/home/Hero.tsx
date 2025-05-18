@@ -2,6 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { theme } from "@/lib/theme";
 import { Link } from "react-router-dom";
+import { Phone, Mail } from "lucide-react";
 
 const Hero = () => {
   return (
@@ -17,12 +18,14 @@ const Hero = () => {
           href="tel:+1234567890" 
           className="flex items-center gap-2 hover:text-gray-200 transition-colors"
         >
+          <Phone className="h-4 w-4" />
           <span>+1 (234) 567-890</span>
         </a>
         <a 
           href="mailto:contact@betagi-eshop.com" 
           className="flex items-center gap-2 hover:text-gray-200 transition-colors"
         >
+          <Mail className="h-4 w-4" />
           <span>contact@betagi-eshop.com</span>
         </a>
       </div>
