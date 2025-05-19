@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { ShoppingCart, Search, User, Heart } from "lucide-react";
@@ -9,6 +8,7 @@ import { useEffect } from "react";
 import { toast } from "sonner";
 import { Input } from "@/components/ui/input";
 import { supabase } from "@/integrations/supabase/client";
+import { theme } from "@/lib/theme";
 
 export const navigationItems = [{
   name: "Home",
