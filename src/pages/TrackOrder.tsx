@@ -46,7 +46,7 @@ const TrackOrder = () => {
   // Fetch user orders
   const fetchUserOrders = (userId: string) => {
     // In a real app, this would be an API call to get user orders
-    // For now, using mock data
+    // For now, using mock data - showing 2 orders as requested
     const mockOrders = [
       {
         id: "ORD-001",

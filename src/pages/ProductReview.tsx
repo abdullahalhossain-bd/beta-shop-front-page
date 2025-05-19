@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { theme } from "@/lib/theme";
+import { supabase } from "@/integrations/supabase/client";
 
 const ProductReview = () => {
   const { orderId } = useParams();
@@ -20,9 +21,28 @@ const ProductReview = () => {
     items: { id: string; name: string; image: string }[];
   } | null>(null);
   const [selectedItem, setSelectedItem] = useState<string | null>(null);
+  const [user, setUser] = useState<any>(null);
 
   useEffect(() => {
-    // In a real app, fetch the order data
+    // Check if user is logged in
+    const fetchUser = async () => {
+      const { data } = await supabase.auth.getSession();
+      setUser(data.session?.user || null);
+      
+      // Only load order data if user is logged in
+      if (data.session?.user) {
+        fetchOrderData();
+      } else {
+        toast.error("Please login to submit reviews");
+        navigate("/login");
+      }
+    };
+    
+    fetchUser();
+  }, [navigate]);
+
+  const fetchOrderData = () => {
+    // In a real app, this would fetch from Supabase
     setTimeout(() => {
       if (orderId === "ORD-001") {
         setOrderData({
@@ -47,9 +67,9 @@ const ProductReview = () => {
       }
       setIsLoading(false);
     }, 1000);
-  }, [orderId, navigate]);
+  };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     if (!rating) {
@@ -62,14 +82,39 @@ const ProductReview = () => {
       return;
     }
     
-    // In a real app, submit the review to your backend
+    if (!user) {
+      toast.error("Please login to submit a review");
+      return;
+    }
+    
+    // In a real app, submit the review to Supabase
     setIsLoading(true);
     
-    setTimeout(() => {
+    try {
+      // Mock submission to Supabase
+      // This would be a real insertion in a production app
+      // const { error } = await supabase
+      //   .from('reviews')
+      //   .insert({
+      //     user_id: user.id,
+      //     product_id: selectedItem,
+      //     order_id: orderId,
+      //     rating: rating,
+      //     review_text: reviewText,
+      //   });
+      
+      // if (error) throw error;
+      
+      // Simulate API call
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
       toast.success("Thank you for your review!");
+      navigate("/track-order");
+    } catch (error) {
+      toast.error("Error submitting your review. Please try again.");
+    } finally {
       setIsLoading(false);
-      navigate("/");
-    }, 1000);
+    }
   };
 
   if (isLoading && !orderData) {
@@ -186,6 +231,12 @@ const ProductReview = () => {
                 </Button>
               </div>
             </form>
+          </div>
+        )}
+        
+        {isLoading && !orderData && (
+          <div className="flex justify-center items-center min-h-[60vh]">
+            <div className="animate-pulse text-xl">Loading...</div>
           </div>
         )}
       </div>

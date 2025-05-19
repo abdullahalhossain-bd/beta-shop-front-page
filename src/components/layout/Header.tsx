@@ -1,19 +1,15 @@
+
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { ShoppingCart } from "lucide-react";
+import { ShoppingCart, Search, User, Heart } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { useStore } from "@/lib/store";
 import { useEffect } from "react";
 import { toast } from "sonner";
+import { Input } from "@/components/ui/input";
+import { supabase } from "@/integrations/supabase/client";
 
-// Define Cart type inline since @/types is missing
-interface Cart {
-  id: string;
-  name: string;
-  quantity: number;
-  price: number;
-}
 export const navigationItems = [{
   name: "Home",
   href: "/"
@@ -27,20 +23,136 @@ export const navigationItems = [{
   name: "FAQs",
   href: "/faqs"
 }];
+
 const Header = () => {
+  const [searchQuery, setSearchQuery] = useState("");
   const cart = useStore(state => state.cart);
+  const wishlist = useStore(state => state.wishlist);
   const clearCart = useStore(state => state.clearCart);
   const [cartQuantity, setCartQuantity] = useState(0);
+  const [wishlistCount, setWishlistCount] = useState(0);
+  const [user, setUser] = useState<any>(null);
+  
   useEffect(() => {
-    const totalQuantity = cart.reduce((sum: number, item: Cart) => sum + item.quantity, 0);
+    // Check if user is logged in
+    const fetchUser = async () => {
+      const { data } = await supabase.auth.getSession();
+      setUser(data.session?.user || null);
+    };
+    
+    fetchUser();
+    
+    // Subscribe to auth changes
+    const { data: authListener } = supabase.auth.onAuthStateChange(
+      (event, session) => {
+        setUser(session?.user || null);
+      }
+    );
+    
+    return () => {
+      authListener.subscription.unsubscribe();
+    };
+  }, []);
+  
+  useEffect(() => {
+    const totalQuantity = cart.reduce((sum: number, item) => sum + item.quantity, 0);
     setCartQuantity(totalQuantity);
   }, [cart]);
+  
+  useEffect(() => {
+    setWishlistCount(wishlist.length);
+  }, [wishlist]);
+
   const handleClearCart = () => {
     clearCart();
     toast.success("Cart cleared successfully!");
   };
+  
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      window.location.href = `/search?q=${encodeURIComponent(searchQuery)}`;
+    }
+  };
+
   return <header className="bg-white shadow-md sticky top-0 z-50">
-      
+      <div className="container mx-auto px-4">
+        <div className="flex flex-wrap items-center justify-between py-4">
+          <Link to="/" className="text-2xl font-bold text-primary">
+            <span className="flex items-center">Betagi E-Shop</span>
+          </Link>
+          
+          <div className="w-full md:w-1/3 mt-4 md:mt-0 order-3 md:order-2">
+            <form onSubmit={handleSearch} className="relative">
+              <Input 
+                type="search"
+                placeholder="Search products..."
+                className="w-full pl-3 pr-10 py-2 rounded-full"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+              <Button 
+                type="submit" 
+                size="icon"
+                className="absolute right-1 top-1/2 -translate-y-1/2 rounded-full"
+                style={{ backgroundColor: theme.colors.secondary }}
+              >
+                <Search size={18} />
+              </Button>
+            </form>
+          </div>
+          
+          <div className="flex items-center space-x-6 order-2 md:order-3">
+            <Link to="/wishlist" className="relative">
+              <Heart size={24} />
+              {wishlistCount > 0 && (
+                <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                  {wishlistCount}
+                </span>
+              )}
+            </Link>
+            
+            <SheetTrigger asChild>
+              <Button variant="ghost" size="icon" className="relative">
+                <ShoppingCart size={24} />
+                {cartQuantity > 0 && (
+                  <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                    {cartQuantity}
+                  </span>
+                )}
+              </Button>
+            </SheetTrigger>
+            
+            <Link to={user ? "/profile" : "/login"} className="flex items-center">
+              <User size={24} />
+            </Link>
+          </div>
+        </div>
+        
+        <nav className="border-t border-gray-200 py-3 hidden md:block">
+          <ul className="flex justify-center space-x-8">
+            {navigationItems.map((item) => (
+              <li key={item.name}>
+                <Link 
+                  to={item.href}
+                  className="text-gray-700 hover:text-primary font-medium transition duration-200"
+                >
+                  {item.name}
+                </Link>
+              </li>
+            ))}
+            <li>
+              <Link 
+                to="/track-order"
+                className="text-gray-700 hover:text-primary font-medium transition duration-200"
+              >
+                Track Order
+              </Link>
+            </li>
+          </ul>
+        </nav>
+      </div>
     </header>;
 };
+
 export default Header;
