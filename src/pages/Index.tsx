@@ -6,6 +6,7 @@ import Categories from "@/components/home/Categories";
 import Features from "@/components/home/Features";
 import Team from "@/components/home/Team";
 import Newsletter from "@/components/home/Newsletter";
+import CtaBanner from "@/components/home/CtaBanner";
 import CartDrawer from "@/components/ui/CartDrawer";
 import { Link } from "react-router-dom";
 
@@ -27,6 +28,7 @@ const Index = () => {
         </div>
         <Categories />
         <Features />
+        <CtaBanner />
         <Team />
         <Newsletter />
       </main>
