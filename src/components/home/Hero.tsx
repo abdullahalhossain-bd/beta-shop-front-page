@@ -2,6 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { theme } from "@/lib/theme";
 import { Link } from "react-router-dom";
+import { Phone, Mail } from "lucide-react";
 
 const Hero = () => {
   return (
@@ -14,16 +15,18 @@ const Hero = () => {
       {/* Contact Information (positioned in the corner) */}
       <div className="absolute top-4 right-4 md:top-6 md:right-8 flex flex-col md:flex-row items-end md:items-center gap-2 md:gap-6 text-white text-sm">
         <a 
-          href="tel:+1234567890" 
+          href="tel:+8801584013318" 
           className="flex items-center gap-2 hover:text-gray-200 transition-colors"
         >
-          <span>+1 (234) 567-890</span>
+          <Phone className="h-4 w-4" />
+          <span>+88015 840 13318</span>
         </a>
         <a 
-          href="mailto:contact@betagi-eshop.com" 
+          href="mailto:betagieshop@gmail.com" 
           className="flex items-center gap-2 hover:text-gray-200 transition-colors"
         >
-          <span>contact@betagi-eshop.com</span>
+          <Mail className="h-4 w-4" />
+          <span>betagieshop@gmail.com</span>
         </a>
       </div>
       
