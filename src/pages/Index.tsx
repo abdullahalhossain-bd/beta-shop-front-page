@@ -15,7 +15,7 @@ const Index = () => {
       backgroundColor: theme.colors.primary
     }}>
         <div className="container mx-auto px-4">
-          <h2 className="text-xl font-bold text-left">Betagi E-Shop  </h2>
+          <h2 className="text-xl font-bold text-left">Betagi E-Shop "."</h2>
         </div>
       </div>
       <Header />
