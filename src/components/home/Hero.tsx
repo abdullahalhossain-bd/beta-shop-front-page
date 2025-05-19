@@ -22,6 +22,13 @@ const Hero = () => {
           <span>+88015 840 13318</span>
         </a>
         <a 
+          href="tel:+8801305006515" 
+          className="flex items-center gap-2 hover:text-gray-200 transition-colors"
+        >
+          <Phone className="h-4 w-4" />
+          <span>+88013 050 06515</span>
+        </a>
+        <a 
           href="mailto:betagieshop@gmail.com" 
           className="flex items-center gap-2 hover:text-gray-200 transition-colors"
         >
