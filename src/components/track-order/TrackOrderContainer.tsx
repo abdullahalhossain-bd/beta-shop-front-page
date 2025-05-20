@@ -5,7 +5,7 @@ import TrackOrderForm from "./TrackOrderForm";
 import OrderList from "./OrderList";
 import OrderDetails from "./OrderDetails";
 import { fetchOrderByNumber, type Order } from "./trackOrderUtils";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
 
 interface TrackOrderContainerProps {
   user: any;

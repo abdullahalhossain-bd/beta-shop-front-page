@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { ShoppingCart, Search, User, Heart } from "lucide-react";
@@ -112,16 +113,34 @@ const Header = () => {
               )}
             </Link>
             
-            <SheetTrigger asChild>
-              <Button variant="ghost" size="icon" className="relative">
-                <ShoppingCart size={24} />
-                {cartQuantity > 0 && (
-                  <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
-                    {cartQuantity}
-                  </span>
-                )}
-              </Button>
-            </SheetTrigger>
+            <Sheet>
+              <SheetTrigger asChild>
+                <Button variant="ghost" size="icon" className="relative">
+                  <ShoppingCart size={24} />
+                  {cartQuantity > 0 && (
+                    <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                      {cartQuantity}
+                    </span>
+                  )}
+                </Button>
+              </SheetTrigger>
+              <SheetContent>
+                {/* Cart content would go here */}
+                <div className="py-4">
+                  <h2 className="text-xl font-bold mb-4">Your Cart</h2>
+                  {cart.length === 0 ? (
+                    <p>Your cart is empty</p>
+                  ) : (
+                    <div>
+                      {/* Cart items would go here */}
+                      <Button onClick={handleClearCart} variant="destructive" className="mt-4">
+                        Clear Cart
+                      </Button>
+                    </div>
+                  )}
+                </div>
+              </SheetContent>
+            </Sheet>
             
             <Link to={user ? "/profile" : "/login"} className="flex items-center">
               <User size={24} />
