@@ -1,14 +1,12 @@
+
 import { Button } from "@/components/ui/button";
 import { theme } from "@/lib/theme";
 import { Link } from "react-router-dom";
-import { Phone, Mail } from "lucide-react";
+
 const Hero = () => {
   return <section className="py-20 lg:py-32 relative" style={{
     background: `linear-gradient(rgba(4, 2, 115, 0.8), rgba(106, 13, 173, 0.8)), url('https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=1000&auto=format&fit=crop') no-repeat center/cover`
   }}>
-      {/* Contact Information (positioned in the corner) */}
-      
-      
       <div className="container mx-auto px-4">
         <div className="max-w-3xl mx-auto text-center text-white space-y-6">
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold animate-fade-in" style={{

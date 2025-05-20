@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { ShoppingCart, Search, User, Heart } from "lucide-react";
+import { ShoppingCart, Search, User, Heart, Phone, Mail } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { useStore } from "@/lib/store";
@@ -9,6 +9,7 @@ import { toast } from "sonner";
 import { Input } from "@/components/ui/input";
 import { supabase } from "@/integrations/supabase/client";
 import { theme } from "@/lib/theme";
+
 export const navigationItems = [{
   name: "Home",
   href: "/"
@@ -22,6 +23,7 @@ export const navigationItems = [{
   name: "FAQs",
   href: "/faqs"
 }];
+
 const Header = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const cart = useStore(state => state.cart);
@@ -30,6 +32,7 @@ const Header = () => {
   const [cartQuantity, setCartQuantity] = useState(0);
   const [wishlistCount, setWishlistCount] = useState(0);
   const [user, setUser] = useState<any>(null);
+
   useEffect(() => {
     // Check if user is logged in
     const fetchUser = async () => {
@@ -50,24 +53,52 @@ const Header = () => {
       authListener.subscription.unsubscribe();
     };
   }, []);
+
   useEffect(() => {
     const totalQuantity = cart.reduce((sum: number, item) => sum + item.quantity, 0);
     setCartQuantity(totalQuantity);
   }, [cart]);
+
   useEffect(() => {
     setWishlistCount(wishlist.length);
   }, [wishlist]);
+
   const handleClearCart = () => {
     clearCart();
     toast.success("Cart cleared successfully!");
   };
+
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchQuery.trim()) {
       window.location.href = `/search?q=${encodeURIComponent(searchQuery)}`;
     }
   };
+
   return <header className="bg-white shadow-md sticky top-0 z-50">
+      <div className="w-full py-2 text-white" style={{
+      backgroundColor: theme.colors.primary
+    }}>
+        <div className="container mx-auto px-4">
+          <div className="flex flex-col sm:flex-row sm:justify-between items-center">
+            <h2 className="text-2xl font-bold">Betagi E-Shop</h2>
+            <div className="flex items-center mt-2 sm:mt-0 text-sm">
+              <div className="flex items-center mr-4">
+                <a href="tel:+8801584013318" className="flex items-center hover:underline">
+                  <Phone size={16} className="mr-2" />
+                  <span>+880-1584013318, +880-1305006515</span>
+                </a>
+              </div>
+              <div className="flex items-center">
+                <a href="mailto:betagieshop@gmail.com" className="flex items-center hover:underline">
+                  <Mail size={16} className="mr-2" />
+                  <span>betagieshop@gmail.com</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
       <div className="container mx-auto px-4">
         <div className="flex flex-wrap items-center justify-between py-4">
           <Link to="/" className="text-2xl font-bold text-primary">
@@ -139,4 +170,5 @@ const Header = () => {
       </div>
     </header>;
 };
+
 export default Header;
