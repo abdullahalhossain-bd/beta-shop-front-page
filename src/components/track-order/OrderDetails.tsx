@@ -2,6 +2,7 @@
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { theme } from "@/lib/theme";
+import { Star } from "lucide-react";
 
 interface TrackingEvent {
   status: string;
@@ -110,12 +111,16 @@ const OrderDetails = ({ order }: OrderDetailsProps) => {
 
       {order.status.toLowerCase() === "delivered" && (
         <div className="mt-8 border-t pt-6">
-          <p className="mb-3">How was your experience? Share your feedback!</p>
+          <p className="mb-3 flex items-center gap-2">
+            <Star className="text-yellow-400 fill-yellow-400" size={18} />
+            How was your experience? Share your feedback!
+          </p>
           <Button 
             onClick={handleWriteReview} 
             style={{ backgroundColor: theme.colors.secondary }}
+            className="flex items-center gap-2"
           >
-            Write a Review
+            <Star size={16} className="text-white" /> Write a Review
           </Button>
         </div>
       )}

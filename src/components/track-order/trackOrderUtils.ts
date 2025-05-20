@@ -27,7 +27,7 @@ export const fetchOrderByNumber = (orderNumber: string): Promise<Order | null> =
         const mockData: Order = {
           id: orderNumber,
           customer: "John Doe",
-          email: "john@example.com",
+          email: "john@example.com", // Always include email for verification
           date: "2023-05-15",
           total: 125.99,
           status: orderNumber === "ORD-001" ? "delivered" : orderNumber === "ORD-002" ? "shipped" : "processing",
@@ -87,6 +87,7 @@ export const fetchUserOrders = (userId: string): Order[] => {
     {
       id: "ORD-001",
       customer: "John Doe",
+      email: "john@example.com",
       date: "2023-05-15",
       total: 125.99,
       status: "delivered",
@@ -123,6 +124,7 @@ export const fetchUserOrders = (userId: string): Order[] => {
     {
       id: "ORD-002",
       customer: "John Doe",
+      email: "john@example.com",
       date: "2023-05-10",
       total: 78.50,
       status: "shipped",

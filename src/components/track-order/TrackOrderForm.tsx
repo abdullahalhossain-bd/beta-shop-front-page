@@ -17,6 +17,12 @@ const TrackOrderForm = ({ onTrackOrder, loading }: TrackOrderFormProps) => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (!orderEmail) {
+      toast.error("Please enter your email address");
+      return;
+    }
+    
     onTrackOrder(orderNumber, orderEmail);
   };
 
@@ -36,7 +42,7 @@ const TrackOrderForm = ({ onTrackOrder, loading }: TrackOrderFormProps) => {
       </div>
       <div>
         <label htmlFor="orderEmail" className="block text-sm font-medium mb-1">
-          Email Address (optional)
+          Email Address <span className="text-red-500">*</span>
         </label>
         <Input
           id="orderEmail"
@@ -44,12 +50,13 @@ const TrackOrderForm = ({ onTrackOrder, loading }: TrackOrderFormProps) => {
           placeholder="Email used for order"
           value={orderEmail}
           onChange={(e) => setOrderEmail(e.target.value)}
+          required
         />
       </div>
       <Button 
         type="submit"
         className="w-full flex items-center justify-center gap-2"
-        disabled={loading || !orderNumber}
+        disabled={loading || !orderNumber || !orderEmail}
         style={{ backgroundColor: theme.colors.primary }}
       >
         {loading ? "Searching..." : (

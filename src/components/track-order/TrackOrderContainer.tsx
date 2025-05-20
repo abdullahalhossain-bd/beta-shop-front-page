@@ -21,10 +21,22 @@ const TrackOrderContainer = ({ user, userOrders }: TrackOrderContainerProps) => 
     setLoading(true);
     
     try {
+      if (!orderEmail) {
+        toast.error("Please enter your email address");
+        setLoading(false);
+        return;
+      }
+      
       const result = await fetchOrderByNumber(orderNumber);
       
       if (result) {
-        setTrackingResult(result);
+        // Verify the email matches the order's email
+        if (result.email && result.email.toLowerCase() === orderEmail.toLowerCase()) {
+          setTrackingResult(result);
+        } else {
+          toast.error("The email address does not match our records for this order.");
+          setTrackingResult(null);
+        }
       } else {
         toast.error("Order not found. Please check your order number and email.");
         setTrackingResult(null);
