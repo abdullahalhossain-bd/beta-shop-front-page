@@ -5,6 +5,7 @@ import TrackOrderForm from "./TrackOrderForm";
 import OrderList from "./OrderList";
 import OrderDetails from "./OrderDetails";
 import { fetchOrderByNumber, type Order } from "./trackOrderUtils";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
 
 interface TrackOrderContainerProps {
   user: any;
@@ -14,6 +15,7 @@ interface TrackOrderContainerProps {
 const TrackOrderContainer = ({ user, userOrders }: TrackOrderContainerProps) => {
   const [loading, setLoading] = useState(false);
   const [trackingResult, setTrackingResult] = useState<Order | null>(null);
+  const [dialogOpen, setDialogOpen] = useState(false);
 
   const handleTrackOrder = async (orderNumber: string, orderEmail: string) => {
     setLoading(true);
@@ -41,6 +43,15 @@ const TrackOrderContainer = ({ user, userOrders }: TrackOrderContainerProps) => 
 
   return (
     <div className="max-w-4xl mx-auto">
+      <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+        <DialogContent className="sm:max-w-lg">
+          <div className="p-4">
+            <h2 className="text-xl font-semibold mb-4">Order Details</h2>
+            <p>Order details content would go here</p>
+          </div>
+        </DialogContent>
+      </Dialog>
+
       {user ? (
         <>
           <div className="bg-blue-100 p-4 rounded-lg mb-6">
