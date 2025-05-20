@@ -18,7 +18,7 @@ const TrackOrder = () => {
         const { data } = await supabase.auth.getSession();
         if (data.session?.user) {
           setUser(data.session.user);
-          const orders = fetchUserOrders(data.session.user.id);
+          const orders = await fetchUserOrders(data.session.user.id);
           setUserOrders(orders);
         }
       } catch (error) {

@@ -18,6 +18,11 @@ const TrackOrderForm = ({ onTrackOrder, loading }: TrackOrderFormProps) => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
+    if (!orderNumber) {
+      toast.error("Please enter your order number");
+      return;
+    }
+    
     if (!orderEmail) {
       toast.error("Please enter your email address");
       return;
@@ -30,7 +35,7 @@ const TrackOrderForm = ({ onTrackOrder, loading }: TrackOrderFormProps) => {
     <form onSubmit={handleSubmit} className="space-y-4">
       <div>
         <label htmlFor="orderNumber" className="block text-sm font-medium mb-1">
-          Order Number
+          Order Number <span className="text-red-500">*</span>
         </label>
         <Input
           id="orderNumber"

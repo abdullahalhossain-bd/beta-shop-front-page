@@ -18,21 +18,21 @@ const TrackOrderContainer = ({ user, userOrders }: TrackOrderContainerProps) => 
   const [dialogOpen, setDialogOpen] = useState(false);
 
   const handleTrackOrder = async (orderNumber: string, orderEmail: string) => {
+    if (!orderNumber || !orderEmail) {
+      toast.error("Both order number and email address are required");
+      return;
+    }
+    
     setLoading(true);
     
     try {
-      if (!orderEmail) {
-        toast.error("Please enter your email address");
-        setLoading(false);
-        return;
-      }
-      
       const result = await fetchOrderByNumber(orderNumber);
       
       if (result) {
         // Verify the email matches the order's email
         if (result.email && result.email.toLowerCase() === orderEmail.toLowerCase()) {
           setTrackingResult(result);
+          toast.success("Order found!");
         } else {
           toast.error("The email address does not match our records for this order.");
           setTrackingResult(null);
