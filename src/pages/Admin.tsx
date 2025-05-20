@@ -13,6 +13,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "
 import OrdersTab from "@/components/admin/OrdersTab";
 import CustomersTab from "@/components/admin/CustomersTab";
 import SettingsTab from "@/components/admin/SettingsTab";
+import AboutBlogTab from "@/components/admin/AboutBlogTab";
 
 const Admin = () => {
   const navigate = useNavigate();
@@ -158,6 +159,7 @@ const Admin = () => {
             <TabsTrigger value="products">Products</TabsTrigger>
             <TabsTrigger value="orders">Orders</TabsTrigger>
             <TabsTrigger value="customers">Customers</TabsTrigger>
+            <TabsTrigger value="content">Content</TabsTrigger>
             <TabsTrigger value="settings">Settings</TabsTrigger>
           </TabsList>
 
@@ -244,6 +246,10 @@ const Admin = () => {
           
           <TabsContent value="customers">
             <CustomersTab />
+          </TabsContent>
+
+          <TabsContent value="content">
+            <AboutBlogTab />
           </TabsContent>
           
           <TabsContent value="settings">

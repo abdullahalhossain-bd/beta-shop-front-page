@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 
 const Hero = () => {
   return <section className="py-20 lg:py-32 relative" style={{
-    background: `linear-gradient(rgba(4, 2, 115, 0.8), rgba(106, 13, 173, 0.8)), url('https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=1000&auto=format&fit=crop') no-repeat center/cover`
+    background: `linear-gradient(rgba(106, 13, 173, 0.8), rgba(140, 20, 252, 0.8)), url('https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=1000&auto=format&fit=crop') no-repeat center/cover`
   }}>
       <div className="container mx-auto px-4">
         <div className="max-w-3xl mx-auto text-center text-white space-y-6">
@@ -25,12 +25,12 @@ const Hero = () => {
           animationDelay: "0.6s"
         }}>
             <Button size="lg" className="text-lg px-8 rounded-full" style={{
-            backgroundColor: theme.colors.primary
+            backgroundColor: theme.colors.secondary
           }} asChild>
-              <Link to="/featured-products">Explore Now</Link>
+              <Link to="/shop">Explore Now</Link>
             </Button>
             <Button size="lg" variant="outline" className="text-lg px-8 rounded-full border-white text-white hover:bg-white hover:text-gray-900" asChild>
-              <Link to="/shop">Browse Shop</Link>
+              <Link to="/featured-products">Browse Shop</Link>
             </Button>
           </div>
         </div>
