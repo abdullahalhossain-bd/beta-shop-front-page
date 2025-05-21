@@ -1,6 +1,5 @@
 
 import { Button } from "@/components/ui/button";
-import { theme } from "@/lib/theme";
 import { Link } from "react-router-dom";
 
 const CtaBanner = () => {
@@ -8,7 +7,7 @@ const CtaBanner = () => {
     <section 
       className="py-16"
       style={{
-        background: `linear-gradient(to right, ${theme.colors.secondary}, #9c42ff)`,
+        background: `linear-gradient(to right, #6a0dad, #9c42ff)`,
         color: "white"
       }}
     >
@@ -19,7 +18,7 @@ const CtaBanner = () => {
 
           <Button 
             className="text-lg px-8 py-6 rounded-full" 
-            style={{ backgroundColor: "white", color: theme.colors.secondary }}
+            style={{ backgroundColor: "white", color: "#6a0dad" }}
             asChild
           >
             <Link to="/featured-products">Shop Now</Link>

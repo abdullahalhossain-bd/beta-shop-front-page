@@ -1,5 +1,6 @@
 
 import { theme } from "@/lib/theme";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
@@ -44,22 +45,22 @@ const Footer = () => {
             <h3 className="text-xl font-semibold mb-6 pb-2 border-b-2 border-[#6a0dad] inline-block">Quick Links</h3>
             <ul className="space-y-4">
               <li className="transform hover:translate-x-2 transition-transform">
-                <a href="/" className="text-gray-300 hover:text-white">Home</a>
+                <Link to="/" className="text-gray-300 hover:text-white">Home</Link>
               </li>
               <li className="transform hover:translate-x-2 transition-transform">
-                <a href="/shop" className="text-gray-300 hover:text-white">Shop</a>
+                <Link to="/shop" className="text-gray-300 hover:text-white">Shop</Link>
               </li>
               <li className="transform hover:translate-x-2 transition-transform">
-                <a href="/about" className="text-gray-300 hover:text-white">About Us</a>
+                <Link to="/about-us" className="text-gray-300 hover:text-white">About Us</Link>
               </li>
               <li className="transform hover:translate-x-2 transition-transform">
-                <a href="/contact" className="text-gray-300 hover:text-white">Contact</a>
+                <Link to="/contact" className="text-gray-300 hover:text-white">Contact</Link>
               </li>
               <li className="transform hover:translate-x-2 transition-transform">
-                <a href="/blog" className="text-gray-300 hover:text-white">Blog</a>
+                <Link to="/blogs" className="text-gray-300 hover:text-white">Blog</Link>
               </li>
               <li className="transform hover:translate-x-2 transition-transform">
-                <a href="/faqs" className="text-gray-300 hover:text-white">FAQs</a>
+                <Link to="/faqs" className="text-gray-300 hover:text-white">FAQs</Link>
               </li>
             </ul>
           </div>
@@ -68,22 +69,22 @@ const Footer = () => {
             <h3 className="text-xl font-semibold mb-6 pb-2 border-b-2 border-[#6a0dad] inline-block">Customer Service</h3>
             <ul className="space-y-4">
               <li className="transform hover:translate-x-2 transition-transform">
-                <a href="/account" className="text-gray-300 hover:text-white">My Account</a>
+                <Link to="/account" className="text-gray-300 hover:text-white">My Account</Link>
               </li>
               <li className="transform hover:translate-x-2 transition-transform">
-                <a href="/track" className="text-gray-300 hover:text-white">Track Order</a>
+                <Link to="/track-order" className="text-gray-300 hover:text-white">Track Order</Link>
               </li>
               <li className="transform hover:translate-x-2 transition-transform">
-                <a href="/wishlist" className="text-gray-300 hover:text-white">Wishlist</a>
+                <Link to="/wishlist" className="text-gray-300 hover:text-white">Wishlist</Link>
               </li>
               <li className="transform hover:translate-x-2 transition-transform">
-                <a href="/shipping" className="text-gray-300 hover:text-white">Shipping Policy</a>
+                <Link to="/shipping" className="text-gray-300 hover:text-white">Shipping Policy</Link>
               </li>
               <li className="transform hover:translate-x-2 transition-transform">
-                <a href="/returns" className="text-gray-300 hover:text-white">Returns & Exchanges</a>
+                <Link to="/returns" className="text-gray-300 hover:text-white">Returns & Exchanges</Link>
               </li>
               <li className="transform hover:translate-x-2 transition-transform">
-                <a href="/privacy" className="text-gray-300 hover:text-white">Privacy Policy</a>
+                <Link to="/privacy" className="text-gray-300 hover:text-white">Privacy Policy</Link>
               </li>
             </ul>
           </div>
