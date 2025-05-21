@@ -14,6 +14,9 @@ import OrdersTab from "@/components/admin/OrdersTab";
 import CustomersTab from "@/components/admin/CustomersTab";
 import SettingsTab from "@/components/admin/SettingsTab";
 import AboutBlogTab from "@/components/admin/AboutBlogTab";
+import PoliciesTab from "@/components/admin/PoliciesTab";
+import SocialMediaTab from "@/components/admin/SocialMediaTab";
+import SubscriberTab from "@/components/admin/SubscriberTab";
 
 const Admin = () => {
   const navigate = useNavigate();
@@ -155,11 +158,14 @@ const Admin = () => {
         </div>
 
         <Tabs defaultValue="products">
-          <TabsList className="mb-6">
+          <TabsList className="mb-6 flex flex-wrap">
             <TabsTrigger value="products">Products</TabsTrigger>
             <TabsTrigger value="orders">Orders</TabsTrigger>
             <TabsTrigger value="customers">Customers</TabsTrigger>
             <TabsTrigger value="content">Content</TabsTrigger>
+            <TabsTrigger value="policies">Policies</TabsTrigger>
+            <TabsTrigger value="social">Social Media</TabsTrigger>
+            <TabsTrigger value="subscribers">Subscribers</TabsTrigger>
             <TabsTrigger value="settings">Settings</TabsTrigger>
           </TabsList>
 
@@ -250,6 +256,18 @@ const Admin = () => {
 
           <TabsContent value="content">
             <AboutBlogTab />
+          </TabsContent>
+          
+          <TabsContent value="policies">
+            <PoliciesTab />
+          </TabsContent>
+          
+          <TabsContent value="social">
+            <SocialMediaTab />
+          </TabsContent>
+          
+          <TabsContent value="subscribers">
+            <SubscriberTab />
           </TabsContent>
           
           <TabsContent value="settings">

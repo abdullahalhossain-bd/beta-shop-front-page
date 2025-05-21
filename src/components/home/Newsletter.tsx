@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { theme } from "@/lib/theme";
 import { toast } from "sonner";
+import { Send } from "lucide-react";
 
 const Newsletter = () => {
   const [email, setEmail] = useState("");
@@ -16,13 +17,38 @@ const Newsletter = () => {
       return;
     }
     
+    if (!isValidEmail(email)) {
+      toast.error("Please enter a valid email address");
+      return;
+    }
+    
     setIsSubmitting(true);
+    
+    // Store subscriber in localStorage
+    const subscribers = JSON.parse(localStorage.getItem("newsletter_subscribers") || "[]");
+    
+    // Check if already subscribed
+    if (subscribers.includes(email)) {
+      toast.info("You're already subscribed to our newsletter!");
+      setIsSubmitting(false);
+      setEmail("");
+      return;
+    }
+    
+    // Add new subscriber
+    subscribers.push(email);
+    localStorage.setItem("newsletter_subscribers", JSON.stringify(subscribers));
+    
     // Simulate API call
     setTimeout(() => {
       toast.success("Thank you for subscribing to our newsletter!");
       setEmail("");
       setIsSubmitting(false);
     }, 1000);
+  };
+  
+  const isValidEmail = (email: string) => {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   };
 
   return (
@@ -48,11 +74,12 @@ const Newsletter = () => {
               />
               <Button 
                 type="submit"
-                className="py-6 px-8 rounded-full font-medium"
+                className="py-6 px-8 rounded-full font-medium flex items-center gap-2"
                 style={{ backgroundColor: theme.colors.secondary }}
                 disabled={isSubmitting}
               >
                 {isSubmitting ? "Subscribing..." : "Subscribe"}
+                <Send size={16} />
               </Button>
             </div>
           </form>
