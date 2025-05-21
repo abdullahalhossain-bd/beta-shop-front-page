@@ -1,8 +1,28 @@
 
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { categories } from "@/lib/data";
+import { categories as defaultCategories } from "@/lib/data";
+
+interface Category {
+  id: string;
+  name: string;
+  image: string;
+  productCount: number;
+}
 
 const Categories = () => {
+  const [categories, setCategories] = useState<Category[]>([]);
+  
+  useEffect(() => {
+    // Load custom categories from localStorage if available
+    const customCategories = localStorage.getItem("custom_categories");
+    if (customCategories) {
+      setCategories(JSON.parse(customCategories));
+    } else {
+      setCategories(defaultCategories);
+    }
+  }, []);
+
   return (
     <section className="py-20 bg-white">
       <div className="container mx-auto px-4">

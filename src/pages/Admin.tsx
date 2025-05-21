@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -17,6 +16,7 @@ import AboutBlogTab from "@/components/admin/AboutBlogTab";
 import PoliciesTab from "@/components/admin/PoliciesTab";
 import SocialMediaTab from "@/components/admin/SocialMediaTab";
 import SubscriberTab from "@/components/admin/SubscriberTab";
+import CategoriesTab from "@/components/admin/CategoriesTab";
 
 const Admin = () => {
   const navigate = useNavigate();
@@ -160,6 +160,7 @@ const Admin = () => {
         <Tabs defaultValue="products">
           <TabsList className="mb-6 flex flex-wrap">
             <TabsTrigger value="products">Products</TabsTrigger>
+            <TabsTrigger value="categories">Categories</TabsTrigger>
             <TabsTrigger value="orders">Orders</TabsTrigger>
             <TabsTrigger value="customers">Customers</TabsTrigger>
             <TabsTrigger value="content">Content</TabsTrigger>
@@ -244,6 +245,10 @@ const Admin = () => {
                 </table>
               </div>
             </div>
+          </TabsContent>
+          
+          <TabsContent value="categories">
+            <CategoriesTab />
           </TabsContent>
           
           <TabsContent value="orders">
