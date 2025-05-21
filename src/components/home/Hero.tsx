@@ -1,6 +1,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
+import { theme } from "@/lib/theme";
 
 const Hero = () => {
   return <section className="py-20 lg:py-32 relative" style={{
@@ -24,7 +25,7 @@ const Hero = () => {
           animationDelay: "0.6s"
         }}>
             <Button size="lg" className="text-lg px-8 rounded-full" style={{
-            backgroundColor: "#6a0dad"
+            backgroundColor: theme.colors.secondary
           }} asChild>
               <Link to="/shop">Explore Now</Link>
             </Button>

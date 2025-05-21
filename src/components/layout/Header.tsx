@@ -77,7 +77,7 @@ const Header = () => {
 
   return <header className="bg-white shadow-md sticky top-0 z-50">
       <div className="w-full py-2 text-white" style={{
-      backgroundColor: theme.colors.primary
+      backgroundColor: "#6a0dad" // Changed from theme.colors.primary to purple
     }}>
         <div className="container mx-auto px-4">
           <div className="flex flex-col sm:flex-row sm:justify-between items-center">
