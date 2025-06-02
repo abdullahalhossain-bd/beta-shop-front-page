@@ -1,3 +1,4 @@
+
 import { Product, Category } from './store';
 
 export const categories: Category[] = [
@@ -138,21 +139,14 @@ export const teamMembers = [
     name: "Jawad Noor Tahim",
     nickname: "Tahim",
     role: "CO-FOUNDER, MARKETING HEAD, PRODUCT SUPPORT",
-    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d"
-  },
-  {
-    id: "2",
-    name: "Golam Mortuja Shikder",
-    nickname: "Emon",
-    role: "Sub Social Media Manager And Official Partner",
-    image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e"
+    image: "https://images.unsplash.com/photo-1549068106-b024baf5062d"
   },
   {
     id: "3",
     name: "MD Abdullah Al Hossain",
     nickname: "Abdullah",
     role: "CO-FOUNDER, PRODUCT LEAD, MARKETING SUPPORT",
-    image: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d"
+    image: "https://images.unsplash.com/photo-1549068106-b024baf5062d"
   }
 ];
 

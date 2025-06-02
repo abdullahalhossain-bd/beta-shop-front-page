@@ -16,42 +16,47 @@ interface ShippingPolicyType {
 
 const ShippingPolicy = () => {
   const [policy, setPolicy] = useState<ShippingPolicyType>({
-    title: "Shipping Policy",
+    title: "🚚 শিপিং নীতিমালা – Betagi E-Shop",
     sections: [
       {
-        id: "domestic",
-        title: "Domestic Shipping",
-        content: "We currently offer shipping to all major cities within Bangladesh. Standard shipping typically takes 2-4 business days for delivery."
+        id: "introduction",
+        title: "ভূমিকা",
+        content: "Betagi E-Shop থেকে আপনি যেকোনো প্রোডাক্ট অর্ডার করলে আমরা চেষ্টা করি দ্রুততম সময়ে আপনার হাতে পৌঁছে দিতে। নিচে আমাদের শিপিং সম্পর্কিত সকল নীতিমালা উল্লেখ করা হলো:"
       },
       {
-        id: "international",
-        title: "International Shipping",
-        content: "For international customers, we offer shipping to select countries. International shipping typically takes 7-14 business days depending on the destination country and local customs procedures."
+        id: "service-area",
+        title: "📍 সার্ভিস এলাকা",
+        content: "আমরা বাংলাদেশের যেকোনো স্থানে হোম ডেলিভারি অথবা কুরিয়ার সার্ভিসের মাধ্যমে পণ্য প্রেরণ করে থাকি।"
       },
       {
-        id: "rates",
-        title: "Shipping Rates",
-        content: "Shipping rates are calculated based on the destination, weight, and dimensions of the ordered items. The exact shipping cost will be displayed during checkout before payment is processed."
+        id: "delivery-time",
+        title: "⏳ ডেলিভারি সময়সীমা",
+        content: "ঢাকা শহরের মধ্যে: ২-৩ কার্যদিবস। ঢাকার বাইরে: ৩-৫ কার্যদিবস (বিশেষ দিনে বা দুর্যোগপূর্ণ পরিস্থিতিতে সময় কিছুটা বাড়তে পারে)"
       },
       {
-        id: "free",
-        title: "Free Shipping",
-        content: "We offer free shipping on all orders above 2000 BDT within Bangladesh. International orders do not qualify for free shipping at this time."
+        id: "delivery-charge",
+        title: "💰 ডেলিভারি চার্জ",
+        content: "ঢাকার মধ্যে: ৳৬০–৳৮০। ঢাকার বাইরে: ৳১০০–৳১৩০ (কুরিয়ারের উপর নির্ভরশীল)। কিছু বিশেষ বা ওভারসাইজ পণ্যের ক্ষেত্রে অতিরিক্ত চার্জ প্রযোজ্য হতে পারে।"
       },
       {
-        id: "tracking",
-        title: "Order Tracking",
-        content: "Once your order ships, you will receive a shipping confirmation email with a tracking number. You can use this tracking number on our Track Order page to monitor your shipment's progress."
+        id: "payment-methods",
+        title: "💳 পেমেন্ট পদ্ধতি",
+        content: "ক্যাশ অন ডেলিভারি (COD) – বেশিরভাগ পণ্যের ক্ষেত্রে প্রযোজ্য। অ্যাডভান্স পেমেন্ট – কিছু প্রোডাক্টের ক্ষেত্রে বাধ্যতামূলক (বিশেষ করে কাস্টম প্রোডাক্ট বা ডিজিটাল পণ্য)"
       },
       {
-        id: "delays",
-        title: "Shipping Delays",
-        content: "Please note that delivery times may be affected by factors outside our control such as weather conditions, customs delays, or local holidays. We appreciate your understanding in such situations."
+        id: "order-confirmation",
+        title: "📦 অর্ডার কনফার্মেশন",
+        content: "অর্ডার করার পর আমাদের প্রতিনিধি ফোন অথবা ম্যাসেজের মাধ্যমে কনফার্মেশন নেবে। কনফার্মেশন ছাড়া কোনো অর্ডার প্রক্রিয়াকরণ হবে না।"
       },
       {
-        id: "damaged",
-        title: "Damaged Items",
-        content: "If your item arrives damaged, please contact our customer service team within 48 hours of receipt with photos of the damaged item and packaging. We will arrange for a replacement or refund as appropriate."
+        id: "delivery-failure",
+        title: "❗ ডেলিভারি ব্যর্থ হলে",
+        content: "গ্রাহক যদি নির্ধারিত সময় বা ঠিকানায় উপস্থিত না থাকেন, তবে ডেলিভারি বাতিল হতে পারে। বারবার অর্ডার বাতিল করা হলে ভবিষ্যতে অর্ডার নেওয়া বন্ধ রাখা হতে পারে।"
+      },
+      {
+        id: "support",
+        title: "📞 সাহায্য প্রয়োজন?",
+        content: "আমাদের কাস্টমার কেয়ার নম্বরে (📞 01305-006515) যোগাযোগ করুন অথবা আমাদের ফেসবুক পেজে ইনবক্স করুন। Betagi E-Shop – আপনার বিশ্বাস, আমাদের দায়িত্ব।"
       }
     ]
   });
