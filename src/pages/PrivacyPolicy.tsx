@@ -17,38 +17,43 @@ interface PrivacyPolicyType {
 
 const PrivacyPolicy = () => {
   const [policy, setPolicy] = useState<PrivacyPolicyType>({
-    title: "Privacy Policy",
+    title: "গোপনীয়তা নীতিমালা",
     lastUpdated: "May 21, 2025",
     sections: [
       {
         id: "introduction",
-        title: "Introduction",
-        content: "Betagi E-Shop respects your privacy and is committed to protecting your personal data. This privacy policy will inform you about how we look after your personal data when you visit our website and tell you about your privacy rights and how the law protects you."
+        title: "ভূমিকা",
+        content: "আমরা, Betagi eShop, আমাদের গ্রাহকদের গোপনীয়তা রক্ষা করার জন্য প্রতিশ্রুতিবদ্ধ। আপনার ব্যক্তিগত তথ্য আমাদের কাছে কিভাবে সংগ্রহ হয়, ব্যবহৃত হয় এবং রক্ষা করা হয় – সেই সম্পর্কে এই নীতিমালায় বিস্তারিত ব্যাখ্যা করা হয়েছে।"
       },
       {
         id: "information",
-        title: "Information We Collect",
-        content: "We may collect, use, store and transfer different kinds of personal data about you which we have grouped together as follows: Identity Data, Contact Data, Financial Data, Transaction Data, and Technical Data."
+        title: "📌 ১. তথ্য সংগ্রহ",
+        content: "আমরা নিম্নলিখিত তথ্য সংগ্রহ করতে পারি:"
       },
       {
         id: "usage",
-        title: "How We Use Your Data",
-        content: "We will only use your personal data when the law allows us to. Most commonly, we will use your personal data to process and deliver orders, manage your account, improve our website, recommend products, and comply with legal obligations."
+        title: "🛡️ ২. তথ্যের ব্যবহার",
+        content: "আমরা আপনার তথ্য ব্যবহার করি শুধুমাত্র:"
       },
       {
         id: "security",
-        title: "Data Security",
-        content: "We have put in place appropriate security measures to prevent your personal data from being accidentally lost, used, or accessed in an unauthorized way. We limit access to your personal data to those employees, agents, contractors, and other third parties who have a business need to know."
+        title: "🔒 ৩. তথ্যের নিরাপত্তা",
+        content: "আমরা আপনার তথ্য গোপন রাখি এবং কোনো তৃতীয় পক্ষের (third party) সাথে বিক্রি বা ভাগ করি না, যতক্ষণ না তা আইনত প্রয়োজন হয়।"
       },
       {
-        id: "rights",
-        title: "Your Legal Rights",
-        content: "Under certain circumstances, you have rights under data protection laws in relation to your personal data, including: request access, correction, erasure, object to processing, restriction of processing, data transfer, and right to withdraw consent."
+        id: "consent",
+        title: "✅ ৪. সম্মতি",
+        content: "আমাদের সাথে অর্ডার বা যোগাযোগ করলে, আপনি এই গোপনীয়তা নীতিমালার সাথে সম্মত হচ্ছেন।"
+      },
+      {
+        id: "changes",
+        title: "📝 ৫. পরিবর্তন",
+        content: "আমরা যেকোনো সময় এই নীতিমালা হালনাগাদ করতে পারি। পরিবর্তন হলে আমাদের ফেসবুক পেজে বা ওয়েবসাইটে তা জানানো হবে।"
       },
       {
         id: "contact",
-        title: "Contact Us",
-        content: "If you have any questions about this privacy policy or our privacy practices, please contact us at: Email: betagieshop@gmail.com, Phone: +880 1584-013318"
+        title: "📞 যোগাযোগ",
+        content: "আপনার গোপনীয়তা সংক্রান্ত কোনো প্রশ্ন থাকলে আমাদের হটলাইনে যোগাযোগ করুন: 📱 01584013318"
       }
     ]
   });
@@ -69,7 +74,7 @@ const PrivacyPolicy = () => {
         
         <div className="max-w-3xl mx-auto prose">
           <p className="mb-4">
-            Last updated: {policy.lastUpdated}
+            সর্বশেষ হালনাগাদ: {policy.lastUpdated}
           </p>
           
           {policy.sections.map((section) => (
@@ -80,35 +85,29 @@ const PrivacyPolicy = () => {
               </p>
               {section.id === "information" && (
                 <ul className="list-disc pl-6 mb-4 space-y-2">
-                  <li><strong>Identity Data:</strong> includes first name, last name, username or similar identifier.</li>
-                  <li><strong>Contact Data:</strong> includes billing address, delivery address, email address, and telephone numbers.</li>
-                  <li><strong>Financial Data:</strong> includes payment card details (stored securely via our payment processors).</li>
-                  <li><strong>Transaction Data:</strong> includes details about payments to and from you and other details of products you have purchased from us.</li>
-                  <li><strong>Technical Data:</strong> includes internet protocol (IP) address, your login data, browser type and version, time zone setting and location, browser plug-in types and versions, operating system and platform, and other technology on the devices you use to access this website.</li>
+                  <li>আপনার নাম</li>
+                  <li>মোবাইল নাম্বার</li>
+                  <li>ঠিকানা (ডেলিভারির জন্য)</li>
+                  <li>আপনার অর্ডার সংক্রান্ত তথ্য</li>
+                  <li>পেমেন্ট মাধ্যম সংক্রান্ত তথ্য (Bkash, Nagad, Rocket ইত্যাদি)</li>
                 </ul>
               )}
               {section.id === "usage" && (
                 <ul className="list-disc pl-6 mb-4 space-y-2">
-                  <li>To process and deliver your orders</li>
-                  <li>To manage your account and relationship with us</li>
-                  <li>To improve our website, products, and services</li>
-                  <li>To recommend products that may be of interest to you</li>
-                  <li>To comply with legal obligations</li>
-                </ul>
-              )}
-              {section.id === "rights" && (
-                <ul className="list-disc pl-6 mb-4 space-y-2">
-                  <li>Request access to your personal data</li>
-                  <li>Request correction of your personal data</li>
-                  <li>Request erasure of your personal data</li>
-                  <li>Object to processing of your personal data</li>
-                  <li>Request restriction of processing your personal data</li>
-                  <li>Request transfer of your personal data</li>
-                  <li>Right to withdraw consent</li>
+                  <li>পণ্য ডেলিভারি নিশ্চিত করতে</li>
+                  <li>অর্ডার এবং পেমেন্ট যাচাই করতে</li>
+                  <li>গ্রাহক সেবা দিতে</li>
+                  <li>অফার বা প্রমোশন জানাতে (SMS বা কলের মাধ্যমে)</li>
                 </ul>
               )}
             </div>
           ))}
+          
+          <div className="mt-8 p-6 bg-blue-50 rounded-lg border border-blue-200">
+            <p className="text-center font-semibold text-blue-800">
+              Betagi eShop আপনার বিশ্বাসকে সম্মান করে। আমাদের কাছে আপনার নিরাপত্তা সবসময় অগ্রাধিকার।
+            </p>
+          </div>
         </div>
       </main>
       <Footer />
