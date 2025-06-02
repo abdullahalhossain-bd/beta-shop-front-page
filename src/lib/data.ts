@@ -1,11 +1,10 @@
-
 import { Product, Category } from './store';
 
 export const categories: Category[] = [
   {
     id: "books",
     name: "Books",
-    image: "https://images.unsplash.com/photo-1544947950-fa07a98d237f",
+    image: "/lovable-uploads/f0f5ef17-cb9c-48ad-8afb-ec6c2747ac34.png",
     productCount: 120
   },
   {

@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -34,22 +33,40 @@ const CategoriesTab = () => {
       // Initialize with default categories if none exist in localStorage
       const defaultCategories = [
         {
+          id: "books",
+          name: "Books",
+          image: "/lovable-uploads/f0f5ef17-cb9c-48ad-8afb-ec6c2747ac34.png",
+          productCount: 120
+        },
+        {
+          id: "digital",
+          name: "Digital Products",
+          image: "https://images.unsplash.com/photo-1565849904461-04a58ad377e0",
+          productCount: 85
+        },
+        {
+          id: "lights",
+          name: "Decor LED Lights",
+          image: "https://images.unsplash.com/photo-1558002038-1055e2e095a1",
+          productCount: 95
+        },
+        {
+          id: "handmade",
+          name: "Handmade",
+          image: "https://images.unsplash.com/photo-1602143407151-7111542de6e8",
+          productCount: 70
+        },
+        {
           id: "electronics",
-          name: "Electronics",
-          image: "https://images.unsplash.com/photo-1550009158-9ebf69173e03?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1301&q=80",
-          productCount: 24
+          name: "Electronic Devices",
+          image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158",
+          productCount: 150
         },
         {
-          id: "clothing",
-          name: "Clothing",
-          image: "https://images.unsplash.com/photo-1551488831-00ddcb6c6bd3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
-          productCount: 36
-        },
-        {
-          id: "furniture",
-          name: "Furniture",
-          image: "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
-          productCount: 15
+          id: "health",
+          name: "Medicine & Health",
+          image: "https://images.unsplash.com/photo-1576678927484-cc907957088c",
+          productCount: 110
         }
       ];
       setCategories(defaultCategories);
