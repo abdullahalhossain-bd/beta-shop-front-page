@@ -84,21 +84,6 @@ export const deleteProduct = async (id: string) => {
   }
 };
 
-// Category operations
-export const getCategories = async () => {
-  const { data, error } = await supabase
-    .from('categories')
-    .select('*')
-    .order('name');
-  
-  if (error) {
-    console.error('Error fetching categories:', error);
-    throw error;
-  }
-  
-  return data || [];
-};
-
 // Real-time subscriptions
 export const subscribeToProducts = (callback: (products: Product[]) => void) => {
   const channel = supabase
