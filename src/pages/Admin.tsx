@@ -5,10 +5,10 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Plus, Edit, Trash2, LogOut } from "lucide-react";
-import { products } from "@/lib/data";
 import { Product, useStore } from "@/lib/store";
 import { toast } from "sonner";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
+import { addProduct, updateProduct, deleteProduct, getProducts, subscribeToProducts } from "@/lib/supabase-data";
 import OrdersTab from "@/components/admin/OrdersTab";
 import CustomersTab from "@/components/admin/CustomersTab";
 import SettingsTab from "@/components/admin/SettingsTab";
@@ -21,10 +21,10 @@ import CategoriesTab from "@/components/admin/CategoriesTab";
 const Admin = () => {
   const navigate = useNavigate();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [allProducts, setAllProducts] = useState<Product[]>(products);
+  const [allProducts, setAllProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
   const [showDialog, setShowDialog] = useState(false);
   const [editProduct, setEditProduct] = useState<Product | null>(null);
-  // Updated formData state type definition to match Product interface with optional oldPrice
   const [formData, setFormData] = useState<{
     id: string;
     name: string;
@@ -63,6 +63,46 @@ const Admin = () => {
     }
   }, [navigate]);
 
+  // Load products from Supabase and set up real-time subscription
+  useEffect(() => {
+    if (!isAuthenticated) return;
+
+    const loadInitialProducts = async () => {
+      try {
+        const products = await getProducts();
+        const transformedProducts = products.map((dbProduct: any) => ({
+          id: dbProduct.id,
+          name: dbProduct.name,
+          description: dbProduct.description,
+          price: dbProduct.price,
+          oldPrice: dbProduct.old_price,
+          image: dbProduct.image,
+          category: dbProduct.category,
+          featured: dbProduct.featured,
+          new: dbProduct.new,
+          sale: dbProduct.sale,
+          rating: dbProduct.rating,
+          reviewCount: dbProduct.review_count
+        }));
+        setAllProducts(transformedProducts);
+      } catch (error) {
+        console.error('Failed to load products:', error);
+        toast.error('Failed to load products');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadInitialProducts();
+
+    // Set up real-time subscription
+    const unsubscribe = subscribeToProducts((products) => {
+      setAllProducts(products);
+    });
+
+    return unsubscribe;
+  }, [isAuthenticated]);
+
   const handleLogout = () => {
     localStorage.removeItem("isAdminLoggedIn");
     navigate("/admin-login");
@@ -71,7 +111,7 @@ const Admin = () => {
   const handleAddProduct = () => {
     setEditProduct(null);
     setFormData({
-      id: `product-${Date.now()}`,
+      id: "",
       name: "",
       description: "",
       price: 0,
@@ -89,7 +129,6 @@ const Admin = () => {
 
   const handleEditProduct = (product: Product) => {
     setEditProduct(product);
-    // Fixed: ensure all required properties have default values if they're optional in Product
     setFormData({
       ...product,
       featured: product.featured || false,
@@ -102,11 +141,14 @@ const Admin = () => {
     setShowDialog(true);
   };
 
-  const handleDeleteProduct = (productId: string) => {
-    // In a real app, you would make an API call to delete the product
-    const updatedProducts = allProducts.filter((p) => p.id !== productId);
-    setAllProducts(updatedProducts);
-    toast.success("Product deleted successfully");
+  const handleDeleteProduct = async (productId: string) => {
+    try {
+      await deleteProduct(productId);
+      toast.success("Product deleted successfully");
+    } catch (error) {
+      console.error('Error deleting product:', error);
+      toast.error("Failed to delete product");
+    }
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -122,28 +164,35 @@ const Admin = () => {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // In a real app, you would make an API call to add/update the product
-    if (editProduct) {
-      // Update existing product
-      const updatedProducts = allProducts.map((p) =>
-        p.id === editProduct.id ? formData : p
-      );
-      setAllProducts(updatedProducts);
-      toast.success("Product updated successfully");
-    } else {
-      // Add new product
-      setAllProducts((prev) => [...prev, formData]);
-      toast.success("Product added successfully");
+    try {
+      if (editProduct) {
+        // Update existing product
+        await updateProduct(editProduct.id, formData);
+        toast.success("Product updated successfully");
+      } else {
+        // Add new product
+        await addProduct(formData);
+        toast.success("Product added successfully");
+      }
+      setShowDialog(false);
+    } catch (error) {
+      console.error('Error saving product:', error);
+      toast.error("Failed to save product");
     }
-
-    setShowDialog(false);
   };
 
-  if (!isAuthenticated) {
-    return null; // Or a loading indicator
+  if (!isAuthenticated || loading) {
+    return (
+      <div className="min-h-screen bg-gray-50 p-6 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#040273] mx-auto mb-4"></div>
+          <p>Loading...</p>
+        </div>
+      </div>
+    );
   }
 
   return (

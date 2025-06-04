@@ -4,11 +4,12 @@ import { useLocation } from "react-router-dom";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
-import { products, categories as defaultCategories } from "@/lib/data";
+import { categories as defaultCategories } from "@/lib/data";
 import ProductCard from "@/components/home/ProductCard";
 import CartDrawer from "@/components/ui/CartDrawer";
 import { ChevronRight } from "lucide-react";
 import { theme } from "@/lib/theme";
+import { useProducts } from "@/hooks/useProducts";
 
 interface Category {
   id: string;
@@ -25,6 +26,9 @@ const Shop = () => {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(categoryParam);
   const [sortBy, setSortBy] = useState<string>("default");
   const [categories, setCategories] = useState<Category[]>([]);
+  
+  // Use the real-time products hook
+  const { products, loading, error } = useProducts();
 
   // Load custom categories from localStorage if available
   useEffect(() => {
@@ -57,6 +61,38 @@ const Shop = () => {
     }
     return 0; // Default, no sorting
   });
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex flex-col">
+        <Header />
+        <main className="flex-grow flex items-center justify-center">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+            <p>Loading products...</p>
+          </div>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen flex flex-col">
+        <Header />
+        <main className="flex-grow flex items-center justify-center">
+          <div className="text-center">
+            <p className="text-red-500 mb-4">{error}</p>
+            <Button onClick={() => window.location.reload()}>
+              Try Again
+            </Button>
+          </div>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen flex flex-col">

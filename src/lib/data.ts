@@ -1,6 +1,7 @@
-
 import { Product, Category } from './store';
+import { getProducts, getCategories } from './supabase-data';
 
+// Static categories for now - these will be loaded from database
 export const categories: Category[] = [
   {
     id: "books",
@@ -40,98 +41,33 @@ export const categories: Category[] = [
   }
 ];
 
-export const products: Product[] = [
-  {
-    id: "1",
-    name: "Wireless Headphones",
-    description: "High-quality wireless headphones with noise cancellation",
-    price: 129.99,
-    oldPrice: 159.99,
-    image: "https://images.unsplash.com/photo-1572569511254-d8f925fe2cbb",
-    category: "electronics",
-    rating: 4.5,
-    reviewCount: 120,
-    featured: true,
-    new: true
-  },
-  {
-    id: "2",
-    name: "Smartphone Stand",
-    description: "Adjustable smartphone stand for desk or bedside",
-    price: 24.99,
-    image: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5",
-    category: "electronics",
-    rating: 4.2,
-    reviewCount: 85,
-    sale: true
-  },
-  {
-    id: "3",
-    name: "Digital Drawing Tablet",
-    description: "Professional grade drawing tablet for digital artists",
-    price: 199.99,
-    oldPrice: 249.99,
-    image: "https://images.unsplash.com/photo-1579586337278-3befd40fd17a",
-    category: "digital",
-    rating: 4.8,
-    reviewCount: 210,
-    featured: true
-  },
-  {
-    id: "4",
-    name: "LED String Lights",
-    description: "Decorative LED string lights for home decor",
-    price: 19.99,
-    image: "https://images.unsplash.com/photo-1558002038-1055e2e095a1",
-    category: "lights",
-    rating: 4.7,
-    reviewCount: 95
-  },
-  {
-    id: "5",
-    name: "Handcrafted Wooden Box",
-    description: "Beautifully crafted wooden storage box with intricate designs",
-    price: 49.99,
-    image: "https://images.unsplash.com/photo-1602143407151-7111542de6e8",
-    category: "handmade",
-    rating: 4.9,
-    reviewCount: 42,
-    featured: true
-  },
-  {
-    id: "6",
-    name: "Classic Novel Collection",
-    description: "Set of 5 classic novels in hardcover edition",
-    price: 79.99,
-    image: "https://images.unsplash.com/photo-1544947950-fa07a98d237f",
-    category: "books",
-    rating: 4.6,
-    reviewCount: 78
-  },
-  {
-    id: "7",
-    name: "Smart Health Monitor",
-    description: "Track your vital health metrics with this smart device",
-    price: 129.99,
-    oldPrice: 149.99,
-    image: "https://images.unsplash.com/photo-1576678927484-cc907957088c",
-    category: "health",
-    rating: 4.3,
-    reviewCount: 64,
-    new: true
-  },
-  {
-    id: "8",
-    name: "Bluetooth Speaker",
-    description: "Portable bluetooth speaker with 24 hour battery life",
-    price: 59.99,
-    image: "https://images.unsplash.com/photo-1608043152269-423dbba4e7e1",
-    category: "electronics",
-    rating: 4.4,
-    reviewCount: 112,
-    sale: true
+// Dynamic products - loaded from Supabase
+export let products: Product[] = [];
+
+// Load products from Supabase
+export const loadProducts = async (): Promise<Product[]> => {
+  try {
+    const dbProducts = await getProducts();
+    products = dbProducts.map((dbProduct: any) => ({
+      id: dbProduct.id,
+      name: dbProduct.name,
+      description: dbProduct.description,
+      price: dbProduct.price,
+      oldPrice: dbProduct.old_price,
+      image: dbProduct.image,
+      category: dbProduct.category,
+      featured: dbProduct.featured,
+      new: dbProduct.new,
+      sale: dbProduct.sale,
+      rating: dbProduct.rating,
+      reviewCount: dbProduct.review_count
+    }));
+    return products;
+  } catch (error) {
+    console.error('Failed to load products:', error);
+    return [];
   }
-];
+};
 
 export const teamMembers = [
   {
