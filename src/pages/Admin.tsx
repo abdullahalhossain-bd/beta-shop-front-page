@@ -142,6 +142,10 @@ const Admin = () => {
   };
 
   const handleDeleteProduct = async (productId: string) => {
+    if (!confirm('Are you sure you want to delete this product?')) {
+      return;
+    }
+    
     try {
       await deleteProduct(productId);
       toast.success("Product deleted successfully");
@@ -167,20 +171,54 @@ const Admin = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    if (!formData.name.trim() || !formData.category.trim() || formData.price <= 0) {
+      toast.error("Please fill in all required fields");
+      return;
+    }
+
     try {
       if (editProduct) {
-        // Update existing product
-        await updateProduct(editProduct.id, formData);
+        // Update existing product - make sure we have a valid ID
+        if (!editProduct.id) {
+          toast.error("Invalid product ID");
+          return;
+        }
+        
+        await updateProduct(editProduct.id, {
+          name: formData.name,
+          description: formData.description,
+          price: formData.price,
+          oldPrice: formData.oldPrice || undefined,
+          image: formData.image,
+          category: formData.category,
+          featured: formData.featured,
+          new: formData.new,
+          sale: formData.sale,
+          rating: formData.rating,
+          reviewCount: formData.reviewCount
+        });
         toast.success("Product updated successfully");
       } else {
         // Add new product
-        await addProduct(formData);
+        await addProduct({
+          name: formData.name,
+          description: formData.description,
+          price: formData.price,
+          oldPrice: formData.oldPrice || undefined,
+          image: formData.image,
+          category: formData.category,
+          featured: formData.featured,
+          new: formData.new,
+          sale: formData.sale,
+          rating: formData.rating,
+          reviewCount: formData.reviewCount
+        });
         toast.success("Product added successfully");
       }
       setShowDialog(false);
     } catch (error) {
       console.error('Error saving product:', error);
-      toast.error("Failed to save product");
+      toast.error("Failed to save product. Please try again.");
     }
   };
 
