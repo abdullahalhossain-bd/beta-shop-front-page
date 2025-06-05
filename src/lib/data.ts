@@ -1,5 +1,5 @@
 import { Product, Category } from './store';
-import { getProducts, getCategories } from './supabase-data';
+import { getProducts } from './supabase-data';
 
 // Static categories for now - these will be loaded from database
 export const categories: Category[] = [
