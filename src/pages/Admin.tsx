@@ -25,6 +25,7 @@ const Admin = () => {
   const [loading, setLoading] = useState(true);
   const [showDialog, setShowDialog] = useState(false);
   const [editProduct, setEditProduct] = useState<Product | null>(null);
+  const [deletingProductId, setDeletingProductId] = useState<string | null>(null);
   const [formData, setFormData] = useState<{
     id: string;
     name: string;
@@ -142,16 +143,27 @@ const Admin = () => {
   };
 
   const handleDeleteProduct = async (productId: string) => {
+    console.log('Delete button clicked for product:', productId);
+    
+    if (!productId) {
+      toast.error("Invalid product ID");
+      return;
+    }
+
     if (!confirm('Are you sure you want to delete this product?')) {
       return;
     }
+    
+    setDeletingProductId(productId);
     
     try {
       await deleteProduct(productId);
       toast.success("Product deleted successfully");
     } catch (error) {
       console.error('Error deleting product:', error);
-      toast.error("Failed to delete product");
+      toast.error("Failed to delete product. Please try again.");
+    } finally {
+      setDeletingProductId(null);
     }
   };
 
@@ -319,10 +331,11 @@ const Admin = () => {
                               variant="outline"
                               size="sm"
                               onClick={() => handleDeleteProduct(product.id)}
-                              className="flex items-center gap-1 text-red-500 hover:text-red-700"
+                              disabled={deletingProductId === product.id}
+                              className="flex items-center gap-1 text-red-500 hover:text-red-700 disabled:opacity-50"
                             >
                               <Trash2 size={14} />
-                              Delete
+                              {deletingProductId === product.id ? 'Deleting...' : 'Delete'}
                             </Button>
                           </div>
                         </td>

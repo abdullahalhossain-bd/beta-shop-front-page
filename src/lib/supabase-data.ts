@@ -85,6 +85,20 @@ export const updateProduct = async (id: string, product: Partial<Product>) => {
 };
 
 export const deleteProduct = async (id: string) => {
+  console.log('Attempting to delete product with ID:', id);
+  
+  // First check if the product exists
+  const { data: existingProduct, error: checkError } = await supabase
+    .from('products')
+    .select('id')
+    .eq('id', id)
+    .single();
+  
+  if (checkError || !existingProduct) {
+    console.error('Product not found for deletion:', checkError);
+    throw new Error('Product not found');
+  }
+
   const { error } = await supabase
     .from('products')
     .delete()
@@ -94,6 +108,8 @@ export const deleteProduct = async (id: string) => {
     console.error('Error deleting product:', error);
     throw error;
   }
+  
+  console.log('Product deleted successfully');
 };
 
 // Real-time subscriptions
