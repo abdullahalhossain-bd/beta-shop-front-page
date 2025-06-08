@@ -148,7 +148,7 @@ const Admin = () => {
   const handleDeleteProduct = async (productId: string) => {
     console.log('Delete button clicked for product:', productId);
     
-    if (!productId) {
+    if (!productId || productId.trim() === '') {
       toast.error("Invalid product ID");
       return;
     }
@@ -160,12 +160,32 @@ const Admin = () => {
     setDeletingProductId(productId);
     
     try {
-      await deleteProduct(productId);
+      const result = await deleteProduct(productId);
+      console.log('Delete result:', result);
       toast.success("Product deleted successfully");
-      // The real-time subscription will automatically update the UI
+      
+      // Force refresh the products list as a backup
+      const products = await getProducts();
+      const transformedProducts = products.map((dbProduct: any) => ({
+        id: dbProduct.id,
+        name: dbProduct.name,
+        description: dbProduct.description,
+        price: dbProduct.price,
+        oldPrice: dbProduct.old_price,
+        image: dbProduct.image,
+        category: dbProduct.category,
+        featured: dbProduct.featured,
+        new: dbProduct.new,
+        sale: dbProduct.sale,
+        rating: dbProduct.rating,
+        reviewCount: dbProduct.review_count
+      }));
+      setAllProducts(transformedProducts);
+      
     } catch (error) {
       console.error('Error deleting product:', error);
-      toast.error("Failed to delete product. Please try again.");
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
+      toast.error(`Failed to delete product: ${errorMessage}`);
     } finally {
       setDeletingProductId(null);
     }

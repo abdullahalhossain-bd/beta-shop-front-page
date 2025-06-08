@@ -85,31 +85,67 @@ export const updateProduct = async (id: string, product: Partial<Product>) => {
 };
 
 export const deleteProduct = async (id: string) => {
-  console.log('Attempting to delete product with ID:', id);
+  console.log('Starting delete operation for product ID:', id);
   
-  // First check if the product exists
+  if (!id || id.trim() === '') {
+    throw new Error('Invalid product ID provided');
+  }
+
+  // First verify the product exists
   const { data: existingProduct, error: checkError } = await supabase
     .from('products')
-    .select('id')
+    .select('id, name')
     .eq('id', id)
-    .single();
+    .maybeSingle();
   
-  if (checkError || !existingProduct) {
-    console.error('Product not found for deletion:', checkError);
+  if (checkError) {
+    console.error('Error checking if product exists:', checkError);
+    throw new Error(`Failed to verify product exists: ${checkError.message}`);
+  }
+  
+  if (!existingProduct) {
+    console.error('Product not found for deletion:', id);
     throw new Error('Product not found');
   }
 
-  const { error } = await supabase
+  console.log('Product found, proceeding with deletion:', existingProduct);
+
+  // Perform the actual deletion
+  const { error: deleteError, count } = await supabase
     .from('products')
-    .delete()
+    .delete({ count: 'exact' })
     .eq('id', id);
   
-  if (error) {
-    console.error('Error deleting product:', error);
-    throw error;
+  if (deleteError) {
+    console.error('Error during deletion:', deleteError);
+    throw new Error(`Failed to delete product: ${deleteError.message}`);
   }
   
-  console.log('Product deleted successfully');
+  console.log('Delete operation completed. Rows affected:', count);
+  
+  if (count === 0) {
+    throw new Error('No rows were deleted. Product may not exist or deletion was blocked.');
+  }
+  
+  // Verify the product was actually deleted
+  const { data: verifyProduct, error: verifyError } = await supabase
+    .from('products')
+    .select('id')
+    .eq('id', id)
+    .maybeSingle();
+    
+  if (verifyError) {
+    console.error('Error verifying deletion:', verifyError);
+    // Don't throw here as the deletion might have succeeded
+  }
+  
+  if (verifyProduct) {
+    console.error('Product still exists after deletion attempt:', verifyProduct);
+    throw new Error('Product deletion failed - product still exists in database');
+  }
+  
+  console.log('Product successfully deleted and verified');
+  return { success: true, deletedCount: count };
 };
 
 // Real-time subscriptions
