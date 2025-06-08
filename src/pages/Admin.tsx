@@ -70,6 +70,7 @@ const Admin = () => {
 
     const loadInitialProducts = async () => {
       try {
+        console.log('Loading initial products...');
         const products = await getProducts();
         const transformedProducts = products.map((dbProduct: any) => ({
           id: dbProduct.id,
@@ -85,6 +86,7 @@ const Admin = () => {
           rating: dbProduct.rating,
           reviewCount: dbProduct.review_count
         }));
+        console.log('Initial products loaded:', transformedProducts.length);
         setAllProducts(transformedProducts);
       } catch (error) {
         console.error('Failed to load products:', error);
@@ -98,6 +100,7 @@ const Admin = () => {
 
     // Set up real-time subscription
     const unsubscribe = subscribeToProducts((products) => {
+      console.log('Real-time update received, updating products:', products.length);
       setAllProducts(products);
     });
 
@@ -159,6 +162,7 @@ const Admin = () => {
     try {
       await deleteProduct(productId);
       toast.success("Product deleted successfully");
+      // The real-time subscription will automatically update the UI
     } catch (error) {
       console.error('Error deleting product:', error);
       toast.error("Failed to delete product. Please try again.");

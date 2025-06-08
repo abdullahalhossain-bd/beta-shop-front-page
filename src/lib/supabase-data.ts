@@ -114,24 +114,37 @@ export const deleteProduct = async (id: string) => {
 
 // Real-time subscriptions
 export const subscribeToProducts = (callback: (products: Product[]) => void) => {
+  console.log('Setting up real-time subscription for products');
+  
   const channel = supabase
     .channel('products-changes')
     .on(
       'postgres_changes',
       {
-        event: '*',
+        event: '*', // Listen to all events (INSERT, UPDATE, DELETE)
         schema: 'public',
         table: 'products'
       },
-      async () => {
+      async (payload) => {
+        console.log('Real-time change detected:', payload.eventType, payload);
+        
         // Fetch updated products when any change occurs
-        const products = await getProducts();
-        callback(products.map(transformDatabaseProduct));
+        try {
+          const products = await getProducts();
+          const transformedProducts = products.map(transformDatabaseProduct);
+          console.log('Sending updated products to callback:', transformedProducts.length);
+          callback(transformedProducts);
+        } catch (error) {
+          console.error('Error fetching updated products:', error);
+        }
       }
     )
-    .subscribe();
+    .subscribe((status) => {
+      console.log('Subscription status:', status);
+    });
 
   return () => {
+    console.log('Cleaning up real-time subscription');
     supabase.removeChannel(channel);
   };
 };
